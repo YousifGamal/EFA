@@ -47,13 +47,17 @@
         </b-row>
 
     </b-form>
+    <!--
     <b-card class="mt-3" header="Form Data Result">
       <pre class="m-0">{{ form }}</pre>
     </b-card>
+    -->
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+const path = "http://127.0.0.1:5000//AddStadium";
 export default {
   name: 'AddStadium',
   data() {
@@ -64,19 +68,36 @@ export default {
             rows:0,
             seatsPerRow:0
         },
-        teams: [ 'M7la', 'Ismaili FC', 'Pyramids','Zamalek'],
         stadiums: ['Borg El Arab', 'El Salam', 'Cairo Stadium', 'Ismaili Stadium', 'M7la Stadium'],
-        stadiumAlert:false,
-        res:false
+        stadiumAlert:false
       }
     },
     methods: {
       onSubmit(event) {
         event.preventDefault()
-        this.stadiumName = false;
-        if (this.res === true) {
-          this.stadiumAlert = true;
+        this.stadiumAlert = false;
+        var payload = {
+          stadiumName:this.form.stadiumName,
+          rows: this.form.rows,
+          seatsPerRow: this.form.seatsPerRow
         }
+        axios.post(path,payload)
+        .then(res => {
+          console.log(res.data)
+           if (res.data.res == true) {
+          this.stadiumAlert = true;
+          console.log("here at if")
+        }
+        else{
+          console.log("here at else")
+          this.form.stadiumName = '';
+          this.form.rows = 0;
+          this.form.seatsPerRow=0;
+        }
+        })
+        .catch(err => console.log(err));
+
+       
         //alert(JSON.stringify(this.form))
       }
     }
