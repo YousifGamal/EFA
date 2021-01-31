@@ -8,7 +8,7 @@
                   <b-button v-b-toggle.createMatchCollapse block variant="outline-success">
                     CREATE NEW MATCH</b-button>   
                   <b-collapse id="createMatchCollapse">
-                    <CreateMatch/>
+                    <CreateMatch matchId="-1"></CreateMatch>
                   </b-collapse>
                 </b-col>
               </b-row>
@@ -23,7 +23,9 @@
               </b-row>
               <b-row class="myRow">
                 <b-col cols="12">
-                  <MatchCard/>
+                  <div v-bind:key="match.id" v-for="match in matches">
+                  <MatchCard v-bind:match="match"/>
+                  </div>
                 </b-col>
               </b-row>
             </b-col>
@@ -43,6 +45,34 @@ export default {
     MatchCard,
     CreateMatch,
     AddStadium
+  },
+  data(){
+    return{
+      matches: [
+        {
+          id:1,
+          homeTeam:"Zamalek",
+          awayTeam:"Pyramids",
+          stadium:"M7la Stadium",
+          referee:"Hossam Hassan",
+          lineman1:"Ahmed Huessenaen",
+          lineman2:"Abelkader Hamad",
+          date: "2021-02-04",
+          time:"00:59:00"
+        },
+        {
+          id:2,
+          homeTeam:"Ismaili FC",
+          awayTeam:"M7la",
+          stadium:"Ismaili Stadium",
+          referee:"Hossam Hassan",
+          lineman1:"Ahmed Huessenaen",
+          lineman2:"Abelkader Hamad",
+          date: "2021-01-30",
+          time:"00:59:00"
+        }
+      ]
+    }
   }
 }
 </script>
