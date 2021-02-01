@@ -100,15 +100,20 @@
         </b-row>
      
     </b-form>
-    <!--
+    
     <b-card class="mt-3" header="Form Data Result">
       <pre class="m-0">{{ form }}</pre>
     </b-card>
-    -->
+    
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+const stadiumsPath = "http://127.0.0.1:5000/getStadiums";
+const teamsPath = "http://127.0.0.1:5000/getTeams";
+const refereesPath = "http://127.0.0.1:5000/getReferees";
+const linemenPath = "http://127.0.0.1:5000/getLinemen";
 export default {
   name: 'CreateMatch',
   props:['matchId','match'],
@@ -130,10 +135,15 @@ export default {
             date: '',
             time:''
         },
-        teams: [ 'M7la', 'Ismaili FC', 'Pyramids','Zamalek'],
+        /*teams: [ 'M7la', 'Ismaili FC', 'Pyramids','Zamalek'],
         stadiums: ['Borg El Arab', 'El Salam', 'Cairo Stadium', 'Ismaili Stadium', 'M7la Stadium'],
         referees: ['Ahmed hassan', 'Sayed Darwesh','Hossam Hassan'],
         linemen: ['Abelkader Hamad', 'Ahmed Huessenaen', 'Dawood EL Gamil', 'Ayman Ftaah'],
+        */
+        teams:[],
+        stadiums:[],
+        referees:[],
+        linemen:[],
         min_date: minDate,
         sameTeamAlert: false,
         sameLineman: false,
@@ -204,6 +214,23 @@ export default {
         }
        */
         }
+        //get selectors data
+        //get stadiums
+        axios.get(stadiumsPath,{})
+        .then(res => this.stadiums =  res.data)
+        .catch(err => console.log(err))
+        //get teams
+        axios.get(teamsPath,{})
+        .then(res => this.teams = res.data)
+        .catch(err => console.log(err))
+        //get referees
+        axios.get(refereesPath,{})
+        .then(res => this.referees = res.data)
+        .catch(err => console.log(err))
+        //get Linemen
+        axios.get(linemenPath,{})
+        .then(res => this.linemen = res.data)
+        .catch(err => console.log(err))
       }
 }
 </script>

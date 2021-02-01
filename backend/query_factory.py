@@ -34,3 +34,26 @@ class QueryFactory:
             #no error happened
             error = False
         return error
+    
+    def getTeams(self):
+        query:str = f"SELECT * FROM efa.teams;"
+        response = self.db_manager.execute_query(query)
+        return response
+
+    def getLinemen(self):
+        query:str = f"SELECT * FROM efa.linesman;"
+        response = self.db_manager.execute_query(query)
+        return response
+
+    def getReferees(self):
+        query:str = f"SELECT * FROM efa.referee;"
+        response = self.db_manager.execute_query(query)
+        return response
+
+    def getStadiums(self):
+        query:str = f"SELECT * FROM efa.stadium;"
+        response = self.db_manager.execute_query(query)
+        return response
+
+    def addMatch(self):
+        return True
