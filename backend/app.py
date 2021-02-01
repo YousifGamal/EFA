@@ -74,4 +74,24 @@ def getLinemen():
     #print(Linemen)
     return jsonify(Linemen)
 
+@app.route('/createMatch',methods=['POST'])
+def addMatch():
+    match = request.get_json()
+    print(match)
+    stadium = match.get('stadium')
+    homeTeam = match.get('homeTeam')
+    awayTeam = match.get('awayTeam')
+    referee = match.get('referee')
+    lineman1 = match.get('lineman1')
+    lineman2 = match.get('lineman2')
+    mdate = match.get('mdate')
+    mtime = match.get('mtime')
+    response = query_factory.addMatch(stadium,homeTeam,awayTeam,referee,lineman1,lineman2,mdate,mtime)
+    if(response):
+        print("Match was not added an error occured")
+    else:
+        print("Match added sucessfully")
+    return jsonify(response)
+    
+
 

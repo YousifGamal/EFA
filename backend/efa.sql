@@ -61,9 +61,7 @@ CREATE TABLE efa.match (
     linesman_2 integer NOT NULL,
     mdate date NOT NULL,
     mtime time without time zone NOT NULL,
-    CONSTRAINT linesmen CHECK ((linesman_1 <> linesman_2)),
-    CONSTRAINT referee_1 CHECK ((main_referee <> linesman_1)),
-    CONSTRAINT referee_2 CHECK ((main_referee <> linesman_2))
+    CONSTRAINT linesmen CHECK ((linesman_1 <> linesman_2))
 );
 
 

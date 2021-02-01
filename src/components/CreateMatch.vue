@@ -114,6 +114,7 @@ const stadiumsPath = "http://127.0.0.1:5000/getStadiums";
 const teamsPath = "http://127.0.0.1:5000/getTeams";
 const refereesPath = "http://127.0.0.1:5000/getReferees";
 const linemenPath = "http://127.0.0.1:5000/getLinemen";
+const createMatchPath = "http://127.0.0.1:5000/createMatch";
 export default {
   name: 'CreateMatch',
   props:['matchId','match'],
@@ -165,13 +166,39 @@ export default {
           this.sameTeamAlert = true;
           this.errorInForm = true;
         }
-        if (this.form.lineman1 == this.form.lineman2){
+        if (this.form.lineman1 === this.form.lineman2){
           this.sameLineman = true;
           this.errorInForm = true;
         }
         //check if form is valid 
         if (this.errorInForm === false) {
-          console.log("form is error free");
+          var payload = {
+            homeTeam: this.form.homeTeam,
+            awayTeam: this.form.awayTeam,
+            stadium: this.form.stadium,
+            referee: this.form.referee,
+            lineman1: this.form.lineman1,
+            lineman2: this.form.lineman2,
+            mdate: this.form.date,
+            mtime: this.form.time
+          }
+          axios.post(createMatchPath,payload)
+          .then(res => {
+            if (res.data == false) {
+              this.form.homeTeam = '',
+              this.form.awayTeam = '',
+              this.form.stadium = '',
+              this.form.referee = '',
+              this.form.lineman1 = '',
+              this.form.lineman2 = '',
+              this.form.date = '',
+              this.form.time = ''
+            }
+            else{
+              console.log(res.data)
+            }
+          })
+          .catch(err => console.log(err))
         }
         //alert(JSON.stringify(this.form))
       },

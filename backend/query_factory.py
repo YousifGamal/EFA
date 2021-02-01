@@ -55,5 +55,19 @@ class QueryFactory:
         response = self.db_manager.execute_query(query)
         return response
 
-    def addMatch(self):
-        return True
+    def addMatch(self,stadiumId,homeTmId,AwayTmId,refId,line1,line2,mdate,mtime):
+        query:str = "INSERT INTO efa.match(" \
+	                "stadium_id, home_team, away_team, main_referee,linesman_1,linesman_2, mdate, mtime)" \
+	                f"VALUES ({stadiumId}, {homeTmId}, {AwayTmId}, {refId},"\
+                    f" {line1}, {line2}, '{mdate}', '{mtime}');"
+        response = self.db_manager.execute_query_no_return(query)
+        error = False
+        if response is not None:
+            #some error happened
+            print(response)
+            error = True
+        else:
+            
+            #no error happened
+            error = False
+        return error
