@@ -7,9 +7,15 @@
             <label for="stadium-id">Stadium Name:</label>
             </b-col>
             <b-col cols="9">
-                <b-form-input id="stadium-id" placeholder="Enter stadium name" :type="text"
+                <b-form-input id="stadium-id" placeholder="Enter stadium name" type="text"
                     v-model="form.stadiumName">
                 </b-form-input>
+            </b-col>
+        </b-row>
+        <b-row class="myRow">
+            <b-col cols="12">
+             <b-alert  v-model="stadiumAlert" variant="danger">
+                            Stadium Name Is Taken</b-alert>
             </b-col>
         </b-row>
         <b-row class="myRow">
@@ -41,43 +47,58 @@
         </b-row>
 
     </b-form>
+    <!--
     <b-card class="mt-3" header="Form Data Result">
       <pre class="m-0">{{ form }}</pre>
     </b-card>
+    -->
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+const path = "http://127.0.0.1:5000//AddStadium";
 export default {
   name: 'AddStadium',
   data() {
  
       return {
         form: {
-            homeTeam:'',
-            awayTeam:'',
-            stadium:'',
-            referee:'',
-            lineman1:'',
-            lineman2:'',
-            date: '',
-            time:'',
             stadiumName:'',
             rows:0,
             seatsPerRow:0
-
         },
-        teams: [ 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
-        stadiums: ['Borg El Arab', 'El Salam', 'Cairo Stadium', 'Stad de Mahla'],
-
-        
-        
+        stadiums: ['Borg El Arab', 'El Salam', 'Cairo Stadium', 'Ismaili Stadium', 'M7la Stadium'],
+        stadiumAlert:false
       }
     },
     methods: {
       onSubmit(event) {
         event.preventDefault()
-        alert(JSON.stringify(this.form))
+        this.stadiumAlert = false;
+        var payload = {
+          stadiumName:this.form.stadiumName,
+          rows: this.form.rows,
+          seatsPerRow: this.form.seatsPerRow
+        }
+        axios.post(path,payload)
+        .then(res => {
+          console.log(res.data)
+           if (res.data.res == true) {
+          this.stadiumAlert = true;
+          console.log("here at if")
+        }
+        else{
+          console.log("here at else")
+          this.form.stadiumName = '';
+          this.form.rows = 0;
+          this.form.seatsPerRow=0;
+        }
+        })
+        .catch(err => console.log(err));
+
+       
+        //alert(JSON.stringify(this.form))
       }
     }
 }
@@ -87,5 +108,10 @@ export default {
 <style scoped>
 .myRow{
     padding-top: 20px;
+}
+
+.form-control:focus {
+  border-color: #08db12;
+  box-shadow: 0 0 10px #72f705;
 }
 </style>
