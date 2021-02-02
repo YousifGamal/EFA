@@ -1,23 +1,17 @@
 <template>
-  <div class="container">
-    <img src="./stadium.jpg">
-    <div class="row">
-      <div class="col-8 py-5">
-        <div>
-          <b-table class="mx-auto">
+  <div>
+    <img src="./stadium.jpg" class="std">
+          <table class="mx-auto">
             <tbody>
               <tr v-for="idxr in rows" :key="idxr">
-                <td v-for="idxc in cols" :key="idxc" class="pl-2" style="width: 10px;">
+                <td v-for="idxc in cols" :key="idxc"  style="width: 10px;">
                   <div v-bind:class="{ clicked: isClicked[idxc+(idxr-1)*cols - 1], notClicked: !isClicked[idxc+(idxr-1)*cols - 1]}">
-                    <img src="./seat.png">
+                    <img class="std" src="./seat.png">
                   </div>
                 </td>
               </tr>
             </tbody>
-          </b-table>
-        </div>
-      </div>
-    </div>
+          </table>
   </div>
 </template>
 
@@ -62,10 +56,20 @@
 </script>
 
 <style scoped>
+table.mx-auto
+{
+    table-layout:fixed;
+    width:100%;
+    border-spacing: 0;
+}
+.std{
+    max-width: 100%;
+}
 .notClicked{
     background:green;
 }
 .clicked{
     background:red;
 }
+
 </style>

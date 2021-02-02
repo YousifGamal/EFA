@@ -11,11 +11,11 @@
         Main Refree: {{match.refName}}, Linesmen: {{match.lName1}}, {{match.lName2}}
         </b-card-text>
         <b-button size="lg" @click.prevent="toggleEditMatch()"  variant="outline-dark">{{editMatchButtonText}}</b-button> -
-        <b-button size="lg"  variant="outline-dark">Seats Details</b-button>
+        <b-button size="lg" @click.prevent="toggleStadium()" variant="outline-dark">Seats Details</b-button>
     </b-card>
     <CreateMatch v-if="editMatch" v-on:matchedited="closeCreateMatchCard" 
     v-bind:match="match" v-bind:matchId="match.id" ></CreateMatch>
-    <ViewStadiumSeats v-bind:matchId="match.id"/>
+    <ViewStadiumSeats v-if="showStadium" v-bind:matchId="match.id"/>
   </div>
 </template>
 
@@ -32,12 +32,16 @@ export default {
   data(){
     return {
       editMatch: false,
-      editMatchButtonText:'Edit Match Details'
+      editMatchButtonText:'Edit Match Details',
+      showStadium:false
     }
   },
   methods:{
     toggleEditMatch(){
       this.editMatch = !this.editMatch
+    },
+    toggleStadium(){
+      this.showStadium = !this.showStadium
     },
     closeCreateMatchCard(){
       this.toggleEditMatch();
