@@ -71,3 +71,40 @@ class QueryFactory:
             #no error happened
             error = False
         return error
+
+    def getMatches(self) :
+        query:str = "select m.* ,t.team_name,t2.team_name, s.stadium_name, r.referee_name, l1.linesman_name,l2.linesman_name from efa.match m "\
+                    "join efa.teams t "\
+                    "on t.team_id = m.home_team "\
+                    "join efa.teams t2 "\
+                    "on t2.team_id = m.away_team "\
+                    "join efa.stadium s "\
+                    "on s.stadium_id = m.stadium_id "\
+                    "join efa.referee r "\
+                    "on r.referee_id = m.main_referee "\
+                    "join efa.linesman l1 "\
+                    "on l1.linesman_id = m.linesman_1 "\
+                    "join efa.linesman l2 "\
+                    "on l2.linesman_id = m.linesman_2 "\
+                    "where m.mdate >= CURRENT_DATE "\
+                    "order by m.mdate, m.mtime "
+        response = self.db_manager.execute_query(query)
+        return response
+
+    def EditMatch(self, mId, stadiumId,homeTmId,AwayTmId,refId,line1,line2,mdate,mtime):
+        query:str = "UPDATE efa.match "\
+	                f"SET stadium_id={stadiumId}, home_team={homeTmId}, away_team={AwayTmId}, "\
+                    f"main_referee={refId}, linesman_1={line1}, "\
+                    f"linesman_2={line2}, mdate='{mdate}', mtime='{mtime}' "\
+	                f"WHERE match_id={mId}; "
+        response = self.db_manager.execute_query_no_return(query)
+        error = False
+        if response is not None:
+            #some error happened
+            #print(response)
+            error = True
+        else:
+            
+            #no error happened
+            error = False
+        return error

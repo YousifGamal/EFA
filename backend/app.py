@@ -92,6 +92,51 @@ def addMatch():
     else:
         print("Match added sucessfully")
     return jsonify(response)
-    
 
+@app.route('/editMatch',methods=['POST'])
+def editMatch():
+    match = request.get_json()
+    print(match)
+    mId = match.get("id")
+    stadium = match.get('stadium')
+    homeTeam = match.get('homeTeam')
+    awayTeam = match.get('awayTeam')
+    referee = match.get('referee')
+    lineman1 = match.get('lineman1')
+    lineman2 = match.get('lineman2')
+    mdate = match.get('mdate')
+    mtime = match.get('mtime')
+    response = query_factory.EditMatch(mId,stadium,homeTeam,awayTeam,referee,lineman1,lineman2,mdate,mtime)
+    if(response):
+        print("Match was not edited an error occured")
+    else:
+        print("Match edited sucessfully")
+    return jsonify(response)
+    
+@app.route('/getMatches',methods=['GET'])
+def getMatches():
+    queryResult = query_factory.getMatches()
+    matches = []
+    #print(queryResult)
+    for match in queryResult:
+        dec = {}
+        dec["id"] =  match[0]
+        dec["stadium"] = match[1]
+        dec["homeTeam"] = match[2]
+        dec["awayTeam"] = match[3]
+        dec["referee"] = match[4]
+        dec["lineman1"] = match[5]
+        dec["lineman2"] = match[6]
+        dec["date"] =str(match[7])
+        dec["time"] = str(match[8])
+        dec["homeName"] = match[9]
+        dec["awayName"] = match[10]
+        dec["stadiumName"] = match[11]
+        dec["refName"] = match[12]
+        dec["lName1"] = match[13]
+        dec["lName2"] = match[14]
+        matches.append(dec)
+    #print(matches)
+    
+    return jsonify(matches)
 

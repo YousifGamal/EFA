@@ -24,7 +24,7 @@
               <b-row class="myRow">
                 <b-col cols="12">
                   <div v-bind:key="match.id" v-for="match in matches">
-                  <MatchCard v-bind:match="match"/>
+                  <MatchCard v-on:matchedited="refreshMatches" v-bind:match="match"/>
                   </div>
                 </b-col>
               </b-row>
@@ -38,7 +38,8 @@
 import MatchCard from '@/components/MatchCard.vue'
 import CreateMatch from '@/components/CreateMatch.vue'
 import AddStadium from '@/components/AddStadium.vue'
-
+import axios from 'axios';
+const matchesPath = "http://127.0.0.1:5000/getMatches";
 export default {
   name: 'Manager',
   components: {
@@ -48,6 +49,8 @@ export default {
   },
   data(){
     return{
+      matches:[]
+      /*
       matches: [
         {
           id:1,
@@ -71,8 +74,21 @@ export default {
           date: "2021-01-30",
           time:"00:59:00"
         }
-      ]
+      ]*/
     }
+  },
+  methods:{
+    getMatches(){
+      axios.get(matchesPath,{})
+      .then(res => this.matches = res.data)
+      .catch(err => console.log(err))
+    },
+    refreshMatches(){
+      this.getMatches()
+    }
+  },
+  beforeMount(){
+    this.getMatches()
   }
 }
 </script>
