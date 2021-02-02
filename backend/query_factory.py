@@ -110,13 +110,13 @@ class QueryFactory:
         return error
     def getStadiumsSeats(self, matchId):
         query:str = "select s.rows as rows, s.columns as cols, ARRAY_AGG(r.seat_number)as seats\
-                    from efa.reservation r\
-                    inner join efa.match m\
-                    on m.match_id = r.match_id\
-                    inner join efa.stadium s\
-                    on m.stadium_id = s.stadium_id\
-                    where r.match_id = "+str(matchId)+\
-                    "group by s.rows, s.columns;"
+                        from efa.match m\
+                        inner join efa.stadium s\
+                        on m.stadium_id = s.stadium_id\
+                        left join efa.reservation r\
+                        on m.match_id = r.match_id\
+                        where m.match_id = "+str(matchId)+\
+                        " group by s.rows, s.columns;"
         response = self.db_manager.execute_query(query)
         return response
 

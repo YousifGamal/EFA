@@ -53,6 +53,7 @@
       .then(res => {this.rows =  res.data[0][0]; 
           this.cols = res.data[0][1];
           this.reservedSeats = res.data[0][2];
+          if(this.reservedSeats[0]==null) this.reservedSeats=[]
           this.generateSeats(this.rows, this.cols);
           })
       .catch(err => console.log(err))
