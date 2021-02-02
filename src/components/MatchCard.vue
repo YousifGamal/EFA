@@ -15,15 +15,18 @@
     </b-card>
     <CreateMatch v-if="editMatch" v-on:matchedited="closeCreateMatchCard" 
     v-bind:match="match" v-bind:matchId="match.id" ></CreateMatch>
+    <ViewStadiumSeats v-bind:matchId="match.id"/>
   </div>
 </template>
 
 <script>
 import CreateMatch from '@/components/CreateMatch.vue'
+import ViewStadiumSeats from '@/components/ViewStadiumSeats.vue'
 export default {
   name: 'MatchCard',
   components: {
-    CreateMatch
+    CreateMatch,
+    ViewStadiumSeats
   },
   props:["match"], 
   data(){

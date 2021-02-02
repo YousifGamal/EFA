@@ -26,7 +26,8 @@
   import axios from 'axios';
   const seatsPath = "http://127.0.0.1:5000/getStadiumsSeats";
   export default {
-    name: 'StadiumSeats',
+    name: 'ViewStadiumSeats',
+    props:['matchId'],
     data() {
       return {
         rows: 10,
@@ -48,7 +49,7 @@
       }
     },
     beforeMount(){
-      axios.get(seatsPath,{params:{match_id: 1}})
+      axios.get(seatsPath,{params:{match_id: this.matchId}})
       .then(res => {this.rows =  res.data[0][0]; 
           this.cols = res.data[0][1];
           this.reservedSeats = res.data[0][2];
