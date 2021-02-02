@@ -1,11 +1,7 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/manager">Manager</router-link>
-    </div>
-    <router-view/>
+   <notifications group="login" position="top left"/>
+   <router-view/>
   </div>
 </template>
 
