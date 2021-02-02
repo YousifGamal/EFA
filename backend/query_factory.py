@@ -72,7 +72,6 @@ class QueryFactory:
             error = False
         return error
 
-<<<<<<< HEAD
     def getMatches(self) :
         query:str = "select m.* ,t.team_name,t2.team_name, s.stadium_name, r.referee_name, l1.linesman_name,l2.linesman_name from efa.match m "\
                     "join efa.teams t "\
@@ -109,7 +108,6 @@ class QueryFactory:
             #no error happened
             error = False
         return error
-=======
     def getStadiumsSeats(self, matchId):
         query:str = "select s.rows as rows, s.columns as cols, ARRAY_AGG(r.seat_number)as seats\
                     from efa.reservation r\
@@ -134,4 +132,3 @@ class QueryFactory:
                 #some error happened
                 reserved_seats.append(s)
         return reserved_seats
->>>>>>> dawood
