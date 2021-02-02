@@ -89,7 +89,13 @@ export default {
   },
   beforeMount(){
     this.getMatches()
-  }
+  },
+        mounted(){
+        //catch the global event of stadium added 
+        this.$root.$on('new-match',()  =>{
+          this.getMatches()
+        })
+      }
 }
 </script>
 

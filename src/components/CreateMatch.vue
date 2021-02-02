@@ -180,21 +180,6 @@ export default {
     methods: {
       onSubmit(event) {
         event.preventDefault()
-        /*
-        //reset flags
-        this.sameTeamAlert = false;
-        this.sameLineman = false;
-        this.errorInForm = false;
-        //check for errors 
-        if (this.form.homeTeam === this.form.awayTeam ) {
-          this.sameTeamAlert = true;
-          this.errorInForm = true;
-        }
-        if (this.form.lineman1 === this.form.lineman2){
-          this.sameLineman = true;
-          this.errorInForm = true;
-        }
-        */
 
         //check if form is valid 
         if (this.handleFormErrors(0)) {
@@ -211,14 +196,15 @@ export default {
           axios.post(createMatchPath,payload)
           .then(res => {
             if (res.data == false) {
-              this.form.homeTeam = '',
-              this.form.awayTeam = '',
-              this.form.stadium = '',
-              this.form.referee = '',
-              this.form.lineman1 = '',
-              this.form.lineman2 = '',
-              this.form.date = '',
-              this.form.time = ''
+              this.form.homeTeam = '';
+              this.form.awayTeam = '';
+              this.form.stadium = '';
+              this.form.referee = '';
+              this.form.lineman1 = '';
+              this.form.lineman2 = '';
+              this.form.date = '';
+              this.form.time = '';
+              this.$root.$emit('new-match');
             }
             else{
               console.log(res.data)

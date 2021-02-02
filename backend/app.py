@@ -7,7 +7,7 @@ from datetime import datetime
 app = Flask(__name__)
 CORS(app, support_credentials=True)
 query_factory = QueryFactory()
-query_factory.initialize_connection(db_name="postgres", db_user="postgres", db_password="jimmy")
+query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="jimmy")
 
 
 
