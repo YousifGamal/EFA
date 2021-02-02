@@ -71,3 +71,28 @@ class QueryFactory:
             #no error happened
             error = False
         return error
+
+    def getStadiumsSeats(self, matchId):
+        query:str = "select s.rows as rows, s.columns as cols, ARRAY_AGG(r.seat_number)as seats\
+                    from efa.reservation r\
+                    inner join efa.match m\
+                    on m.match_id = r.match_id\
+                    inner join efa.stadium s\
+                    on m.stadium_id = s.stadium_id\
+                    where r.match_id = "+str(matchId)+\
+                    "group by s.rows, s.columns;"
+        response = self.db_manager.execute_query(query)
+        return response
+
+    def reserveStadiumsSeats(self, matchId, userId, seats):
+        reserved_seats = []
+        for s in seats:
+            query:str = "INSERT INTO efa.reservation(" \
+                        "match_id, user_id, seat_number)" \
+                        f"VALUES ({matchId}, {userId}, {s});"
+            response = self.db_manager.execute_query_no_return(query)
+            error = False
+            if response is not None:
+                #some error happened
+                reserved_seats.append(s)
+        return reserved_seats

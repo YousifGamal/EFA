@@ -8,7 +8,7 @@
             <tbody>
               <tr v-for="idxr in rows" :key="idxr">
                 <td v-for="idxc in cols" :key="idxc" class="pl-2" style="width: 10px;">
-                  <div v-bind:class="{ clicked: isClicked[idxc+(idxr-1)*cols - 1], notClicked: !isClicked[idxc+(idxr-1)*cols - 1]}" >
+                  <div v-bind:class="{ clicked: isClicked[idxc+(idxr-1)*cols - 1], notClicked: !isClicked[idxc+(idxr-1)*cols - 1]}">
                     <img src="./seat.png">
                   </div>
                 </td>
@@ -22,50 +22,39 @@
 </template>
 
 <script>
-  import Vue from 'vue';
-  
+  //import Vue from 'vue';
+  import axios from 'axios';
+  const seatsPath = "http://127.0.0.1:5000/getStadiumsSeats";
   export default {
     name: 'StadiumSeats',
     data() {
       return {
-        selectedSeat: null,
         rows: 10,
         cols: 10,
-        seats: [],
-        isClicked: []
+        isClicked: [],
+        reservedSeats: []
       }
     },
     methods: {
-      onSeatSelected: function (r, c) {
-          let seatIndx = c+(r-1)*this.cols - 1;
-          if(this.isClicked[seatIndx]==true)
-            this.isClicked[seatIndx]=false;
-          else
-            this.isClicked[seatIndx]=true;
-          
-          if(this.seats[seatIndx].status == 'RA'){
-              this.seats[seatIndx].status = 'RB';
-          }
-          else
-              this.seats[seatIndx].status = 'RA'; 
-          this.$forceUpdate();
-      },
-      generateSeats:function() {
-        for (let y = 1; y <= this.rows; ++y) {
-          for (let x = 1; x <= this.cols; ++x) {
+      generateSeats:function(r,c) {
+        for (let y = 1; y <= r; ++y) {
+          for (let x = 1; x <= c; ++x) {
             this.isClicked.push(false);            
           }
-
         }
-        this.isClicked[10] = true;
-        this.isClicked[11] = true;
-        this.isClicked[12] = true;
+        for(let i=0; i<this.reservedSeats.length; i++){
+          this.isClicked[this.reservedSeats[i]] = true;
+        }
       }
     },
     beforeMount(){
-      this.rows = 5;
-      this.cols = 6;
-      this.generateSeats();
+      axios.get(seatsPath,{params:{match_id: 1}})
+      .then(res => {this.rows =  res.data[0][0]; 
+          this.cols = res.data[0][1];
+          this.reservedSeats = res.data[0][2];
+          this.generateSeats(this.rows, this.cols);
+          })
+      .catch(err => console.log(err))
     }
   }
 </script>

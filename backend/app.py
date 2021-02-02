@@ -7,7 +7,7 @@ from datetime import datetime
 app = Flask(__name__)
 CORS(app, support_credentials=True)
 query_factory = QueryFactory()
-query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="jimmy")
+query_factory.initialize_connection(db_name="postgres", db_user="postgres", db_password="jimmy")
 
 
 
@@ -93,5 +93,17 @@ def addMatch():
         print("Match added sucessfully")
     return jsonify(response)
     
+@app.route('/getStadiumsSeats',methods=['GET'])
+def getStadiumsSeats():
+    match_id = request.args.get("match_id")
+    response = query_factory.getStadiumsSeats(match_id)
+    return jsonify(response)
 
-
+@app.route('/addSeats',methods=['POST'])
+def addSeats():
+    reservation = request.get_json()
+    matchId = reservation.get('matchId')
+    userId = reservation.get('userId')
+    seats = reservation.get('seats')
+    reserved_seats = query_factory.reserveStadiumsSeats(matchId,userId,seats)
+    return jsonify(reserved_seats)
