@@ -127,8 +127,13 @@ class QueryFactory:
                         "match_id, user_id, seat_number)" \
                         f"VALUES ({matchId}, {userId}, {s});"
             response = self.db_manager.execute_query_no_return(query)
-            error = False
+            #error = False
             if response is not None:
                 #some error happened
                 reserved_seats.append(s)
         return reserved_seats
+    def numberOfRecvSeasts(self,matchId):
+        query:str = "select count(*) from efa.reservation "\
+                    f"where match_id= {matchId}"
+        response = self.db_manager.execute_query(query)
+        return response

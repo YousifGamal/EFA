@@ -16,7 +16,6 @@
 </template>
 
 <script>
-  //import Vue from 'vue';
   import axios from 'axios';
   const seatsPath = "http://127.0.0.1:5000/getStadiumsSeats";
   export default {
@@ -40,6 +39,8 @@
         for(let i=0; i<this.reservedSeats.length; i++){
           this.isClicked[this.reservedSeats[i]] = true;
         }
+        
+          
       }
     },
     beforeMount(){
@@ -47,7 +48,10 @@
       .then(res => {this.rows =  res.data[0][0]; 
           this.cols = res.data[0][1];
           this.reservedSeats = res.data[0][2];
-          if(this.reservedSeats[0]==null) this.reservedSeats=[]
+          if(this.reservedSeats[0]==null){ 
+            this.reservedSeats=[]
+            
+          }
           this.generateSeats(this.rows, this.cols);
           })
       .catch(err => console.log(err))

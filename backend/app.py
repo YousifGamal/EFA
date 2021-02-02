@@ -155,3 +155,9 @@ def addSeats():
     seats = reservation.get('seats')
     reserved_seats = query_factory.reserveStadiumsSeats(matchId,userId,seats)
     return jsonify(reserved_seats)
+
+@app.route('/numberOfReservedSeats',methods=['GET'])
+def numberOfReserSeats():
+    mId = request.args.get("mid")
+    response = query_factory.numberOfRecvSeasts(mId)
+    return jsonify(response[0][0])
