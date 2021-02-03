@@ -1,7 +1,6 @@
 <template>
-  <div class="container">
-    <img src="./stadium.jpg">
-    <br><br>
+  <div>
+    <img src="./stadium.jpg" class="std">
     <div id="target-id"></div>
     <form name="form1" v-show="ticketCount>0">
     <div class="row">
@@ -18,34 +17,29 @@
       <div class=rq v-show="wrongCardPin">Please input the card pin.</div>
       <br>
     </div>
-      <button type="button" @click="required()" :disabled="isSubmit" class="info">
-        Submit
+      <button type="button" @click="required()" class="info">
+        Buy Tickets
       </button>
     </form>
      <div class=info v-show="isPaid">Payment completed successfully.</div>
     <br>
-    <div class="row">
-      <div class="col-8 py-5">
-        <div>
-          <b-table class="mx-auto">
+          <table class="mx-auto">
             <tbody>
               <tr v-for="idxr in rows" :key="idxr">
-                <td v-for="idxc in cols" :key="idxc" class="pl-2" style="width: 10px;">
+                <td v-for="idxc in cols" :key="idxc" style="width: 10px;">
                   <div v-bind:class="{clicked: isReserved[idxc+(idxr-1)*cols - 1], inProgress: isClicked[idxc+(idxr-1)*cols - 1], notClicked: !isClicked[idxc+(idxr-1)*cols - 1]}"  @click="onSeatSelected(idxr, idxc)" >
-                    <img src="./seat.png">
+                    <img src="./seat.png" class="std">
                   </div>
                 </td>
               </tr>
             </tbody>
-          </b-table>
-        </div>
-      </div>
-    </div>
+          </table>
   </div>
 </template>
 
 <script>
   import axios from 'axios';
+  import Pusher from 'pusher-js' // import Pusher
   const seatsPath = "http://127.0.0.1:5000/getStadiumsSeats";
   const reserveSeatsPath = "http://127.0.0.1:5000/addSeats";  
   export default {
@@ -62,12 +56,16 @@
         isClicked: [],
         isReserved: [],
         reservedSeatsBeforehead: [],
-        matchId: 1,
+        matchId: 2,
         userId: 1,
-        alreadyReservedSeats:[19],
+        alreadyReservedSeats:[],
         alreadyReservedSeats2:[],
         isPaid: false
       }
+    },
+    created () {
+    // ...
+      this.subscribe()
     },
     methods: {
       required: function(){
@@ -102,22 +100,19 @@
           axios.post(reserveSeatsPath,payload)
           .then(res => {this.alreadyReservedSeats =  res.data;
             if(this.alreadyReservedSeats.length==0){
-              console.log("All seats reserved.");
+              this.$root.$emit('seat-reserved');
               this.isPaid = true;
               this.ticketCount = 0;
             }else{
               this.ticketCount = 0;
-              console.log("hereeeeeee");
               for(let i=0; i<this.alreadyReservedSeats.length; i++){
                 for(let i=0; i<this.reservedSeatsBeforehead.length; i++){
                   if(this.reservedSeatsBeforehead[i]==this.alreadyReservedSeats[i])
                     this.reservedSeatsBeforehead.splice(i, 1);
                 }
-                //let r=Math.ceil(this.alreadyReservedSeats[i]/this.cols);
-                //let c=this.alreadyReservedSeats[i]+1-(r-1)*this.cols;
-                //console.log(r);
-                //console.log(c);
-                //document.getElementById('target-id').innerHTML = '<p>Seat at row number'+this.alreadyReservedSeats[i];
+                let r=Math.ceil(this.alreadyReservedSeats[i]/this.cols);
+                let c=this.alreadyReservedSeats[i]+1-(r-1)*this.cols;
+                document.getElementById('target-id').innerHTML = '<p>Seat at row number '+r+' and column ' +c+' is already taken. ';
               }
             }
 
@@ -144,6 +139,21 @@
           } 
           this.$forceUpdate();
       },
+      subscribe () {
+        let pusher = new Pusher('53327a58e47a84312542', { cluster: 'eu' })
+        pusher.subscribe('seats')
+        pusher.bind('seat-reserved', data => {
+          console.log(data);
+          axios.get(seatsPath,{params:{match_id: 2}})
+          .then(res => {this.rows =  res.data[0][0]; 
+              this.cols = res.data[0][1];
+              this.reservedSeatsBeforehead = res.data[0][2];
+              if(this.reservedSeats[0]==null) this.reservedSeats=[]
+              this.generateSeats(this.rows, this.cols);
+              })
+          .catch(err => console.log(err))
+        })
+      },
       generateSeats:function(r,c) {
         for (let y = 1; y <= r; ++y) {
           for (let x = 1; x <= c; ++x) {
@@ -157,10 +167,11 @@
       }
     },
     beforeMount(){
-      axios.get(seatsPath,{params:{match_id: 1}})
+      axios.get(seatsPath,{params:{match_id: 2}})
       .then(res => {this.rows =  res.data[0][0]; 
           this.cols = res.data[0][1];
           this.reservedSeatsBeforehead = res.data[0][2];
+          if(this.reservedSeats[0]==null) this.reservedSeats=[]
           this.generateSeats(this.rows, this.cols);
           })
       .catch(err => console.log(err))
@@ -187,5 +198,14 @@
 color: 
 #FF0000;
 font-size: 10pt;
+}
+table.mx-auto
+{
+    table-layout:fixed;
+    width:100%;
+    border-spacing: 0;
+}
+.std{
+    max-width: 100%;
 }
 </style>
