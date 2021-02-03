@@ -43,7 +43,8 @@
   const seatsPath = "http://127.0.0.1:5000/getStadiumsSeats";
   const reserveSeatsPath = "http://127.0.0.1:5000/addSeats";  
   export default {
-    name: 'StadiumSeats',
+    name: 'ReserveStadiumSeats',
+    props:['matchId','userId'],
     data() {
       return {
         isSubmit: false,
@@ -56,8 +57,6 @@
         isClicked: [],
         isReserved: [],
         reservedSeatsBeforehead: [],
-        matchId: 2,
-        userId: 1,
         alreadyReservedSeats:[],
         alreadyReservedSeats2:[],
         isPaid: false
@@ -144,7 +143,7 @@
         pusher.subscribe('seats')
         pusher.bind('seat-reserved', data => {
           console.log(data);
-          axios.get(seatsPath,{params:{match_id: 2}})
+          axios.get(seatsPath,{params:{match_id: this.matchId}})
           .then(res => {this.rows =  res.data[0][0]; 
               this.cols = res.data[0][1];
               this.reservedSeatsBeforehead = res.data[0][2];
@@ -167,7 +166,8 @@
       }
     },
     beforeMount(){
-      axios.get(seatsPath,{params:{match_id: 2}})
+      console.log(this.matchId);
+      axios.get(seatsPath,{params:{match_id: this.matchId}})
       .then(res => {this.rows =  res.data[0][0]; 
           this.cols = res.data[0][1];
           this.reservedSeatsBeforehead = res.data[0][2];

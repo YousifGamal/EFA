@@ -8,7 +8,7 @@
                   <div v-bind:key="match.id" v-for="match in matches">
                   <MatchCard v-on:matchedited="refreshMatches" v-bind:type="false" v-bind:match="match"/>
                   <b-button @click.prevent="toggleReserveSeats()" variant="outline-dark">Seats Details</b-button>
-                  <ReserveStadiumSeats v-if="showSeats"></ReserveStadiumSeats>
+                  <ReserveStadiumSeats v-if="showSeats" v-bind:matchId="match.id" v-bind:userId="1"></ReserveStadiumSeats>
                   </div>
                 </b-col>
               </b-row>
