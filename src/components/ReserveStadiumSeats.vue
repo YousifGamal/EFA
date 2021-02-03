@@ -43,7 +43,7 @@
   const seatsPath = "http://127.0.0.1:5000/getStadiumsSeats";
   const reserveSeatsPath = "http://127.0.0.1:5000/addSeats";  
   export default {
-    name: 'StadiumSeats',
+    name: 'ReserveStadiumSeats',
     data() {
       return {
         isSubmit: false,

@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Manager from '../views/Manager.vue'
 import Login from '../views/Login.vue'
 import UpdateProfile from '../views/UpdateProfile.vue'
+import User from '../views/User.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -34,6 +35,11 @@ const routes = [
     path:'/update',
     name:'UpdateProfile',
     component:UpdateProfile
+  },
+  {
+    path:'/user',
+    name:'user',
+    component: User
   }
 ]
 

@@ -10,8 +10,8 @@
         <b-card-text>
         Main Refree: {{match.refName}}, Linesmen: {{match.lName1}}, {{match.lName2}}
         </b-card-text>
-        <b-button :disabled="disbaleEdit" size="lg" @click.prevent="toggleEditMatch()"  variant="outline-dark">{{editMatchButtonText}}</b-button> -
-        <b-button  size="lg" @click.prevent="toggleStadium()" variant="outline-dark">Seats Details</b-button>
+        <b-button v-show="type" :disabled="disbaleEdit" size="lg" @click.prevent="toggleEditMatch()"  variant="outline-dark">{{editMatchButtonText}}</b-button>  
+        <b-button v-show="type" size="lg" @click.prevent="toggleStadium()" variant="outline-dark">Seats Details</b-button>
     </b-card>
     <CreateMatch v-if="editMatch"  v-on:matchedited="closeCreateMatchCard" 
     v-bind:match="match" v-bind:matchId="match.id" ></CreateMatch>
@@ -32,7 +32,7 @@ export default {
     CreateMatch,
     ViewStadiumSeats
   },
-  props:["match"], 
+  props:["match","type"], 
   data(){
     return {
       editMatch: false,
