@@ -43,7 +43,7 @@
   const seatsPath = "http://127.0.0.1:5000/getStadiumsSeats";
   const reserveSeatsPath = "http://127.0.0.1:5000/addSeats";  
   export default {
-    name: 'ReserveStadiumSeats',
+    name: 'StadiumSeats',
     data() {
       return {
         isSubmit: false,
@@ -100,7 +100,7 @@
           axios.post(reserveSeatsPath,payload)
           .then(res => {this.alreadyReservedSeats =  res.data;
             if(this.alreadyReservedSeats.length==0){
-              this.$root.$emit('seat-reserved');
+              this.reservedSeats.splice(0);
               this.isPaid = true;
               this.ticketCount = 0;
             }else{
