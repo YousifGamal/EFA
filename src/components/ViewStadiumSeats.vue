@@ -1,80 +1,79 @@
 <template>
-  <div class="container">
-    <img src="./stadium.jpg">
-    <div class="row">
-      <div class="col-8 py-5">
-        <div>
-          <b-table class="mx-auto">
+  <div>
+    <img src="./stadium.jpg" class="std">
+          <table class="mx-auto">
             <tbody>
               <tr v-for="idxr in rows" :key="idxr">
-                <td v-for="idxc in cols" :key="idxc" class="pl-2" style="width: 10px;">
-                  <div v-bind:class="{ clicked: isClicked[idxc+(idxr-1)*cols - 1], notClicked: !isClicked[idxc+(idxr-1)*cols - 1]}" >
-                    <img src="./seat.png">
+                <td v-for="idxc in cols" :key="idxc"  style="width: 10px;">
+                  <div v-bind:class="{ clicked: isClicked[idxc+(idxr-1)*cols - 1], notClicked: !isClicked[idxc+(idxr-1)*cols - 1]}">
+                    <img class="std" src="./seat.png">
                   </div>
                 </td>
               </tr>
             </tbody>
-          </b-table>
-        </div>
-      </div>
-    </div>
+          </table>
   </div>
 </template>
 
 <script>
-  import Vue from 'vue';
-  
+  import axios from 'axios';
+  const seatsPath = "http://127.0.0.1:5000/getStadiumsSeats";
   export default {
-    name: 'StadiumSeats',
+    name: 'ViewStadiumSeats',
+    props:['matchId'],
     data() {
       return {
-        selectedSeat: null,
         rows: 10,
         cols: 10,
-        seats: [],
-        isClicked: []
+        isClicked: [],
+        reservedSeats: []
       }
     },
     methods: {
-      onSeatSelected: function (r, c) {
-          let seatIndx = c+(r-1)*this.cols - 1;
-          if(this.isClicked[seatIndx]==true)
-            this.isClicked[seatIndx]=false;
-          else
-            this.isClicked[seatIndx]=true;
-          
-          if(this.seats[seatIndx].status == 'RA'){
-              this.seats[seatIndx].status = 'RB';
-          }
-          else
-              this.seats[seatIndx].status = 'RA'; 
-          this.$forceUpdate();
-      },
-      generateSeats:function() {
-        for (let y = 1; y <= this.rows; ++y) {
-          for (let x = 1; x <= this.cols; ++x) {
+      generateSeats:function(r,c) {
+        for (let y = 1; y <= r; ++y) {
+          for (let x = 1; x <= c; ++x) {
             this.isClicked.push(false);            
           }
-
         }
-        this.isClicked[10] = true;
-        this.isClicked[11] = true;
-        this.isClicked[12] = true;
+        for(let i=0; i<this.reservedSeats.length; i++){
+          this.isClicked[this.reservedSeats[i]] = true;
+        }
+        
+          
       }
     },
     beforeMount(){
-      this.rows = 5;
-      this.cols = 6;
-      this.generateSeats();
+      axios.get(seatsPath,{params:{match_id: this.matchId}})
+      .then(res => {this.rows =  res.data[0][0]; 
+          this.cols = res.data[0][1];
+          this.reservedSeats = res.data[0][2];
+          if(this.reservedSeats[0]==null){ 
+            this.reservedSeats=[]
+            
+          }
+          this.generateSeats(this.rows, this.cols);
+          })
+      .catch(err => console.log(err))
     }
   }
 </script>
 
 <style scoped>
+table.mx-auto
+{
+    table-layout:fixed;
+    width:100%;
+    border-spacing: 0;
+}
+.std{
+    max-width: 100%;
+}
 .notClicked{
     background:green;
 }
 .clicked{
     background:red;
 }
+
 </style>

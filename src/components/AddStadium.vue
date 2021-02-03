@@ -57,7 +57,7 @@
 
 <script>
 import axios from 'axios';
-const path = "http://127.0.0.1:5000//AddStadium";
+const path = "http://127.0.0.1:5000/AddStadium";
 export default {
   name: 'AddStadium',
   data() {
@@ -93,6 +93,8 @@ export default {
           this.form.stadiumName = '';
           this.form.rows = 0;
           this.form.seatsPerRow=0;
+          //after adding the stadium emit global event
+          this.$root.$emit('stadium-added')
         }
         })
         .catch(err => console.log(err));

@@ -71,3 +71,69 @@ class QueryFactory:
             #no error happened
             error = False
         return error
+
+    def getMatches(self) :
+        query:str = "select m.* ,t.team_name,t2.team_name, s.stadium_name, r.referee_name, l1.linesman_name,l2.linesman_name from efa.match m "\
+                    "join efa.teams t "\
+                    "on t.team_id = m.home_team "\
+                    "join efa.teams t2 "\
+                    "on t2.team_id = m.away_team "\
+                    "join efa.stadium s "\
+                    "on s.stadium_id = m.stadium_id "\
+                    "join efa.referee r "\
+                    "on r.referee_id = m.main_referee "\
+                    "join efa.linesman l1 "\
+                    "on l1.linesman_id = m.linesman_1 "\
+                    "join efa.linesman l2 "\
+                    "on l2.linesman_id = m.linesman_2 "\
+                    "where m.mdate >= CURRENT_DATE "\
+                    "order by m.mdate, m.mtime "
+        response = self.db_manager.execute_query(query)
+        return response
+
+    def EditMatch(self, mId, stadiumId,homeTmId,AwayTmId,refId,line1,line2,mdate,mtime):
+        query:str = "UPDATE efa.match "\
+	                f"SET stadium_id={stadiumId}, home_team={homeTmId}, away_team={AwayTmId}, "\
+                    f"main_referee={refId}, linesman_1={line1}, "\
+                    f"linesman_2={line2}, mdate='{mdate}', mtime='{mtime}' "\
+	                f"WHERE match_id={mId}; "
+        response = self.db_manager.execute_query_no_return(query)
+        error = False
+        if response is not None:
+            #some error happened
+            #print(response)
+            error = True
+        else:
+            
+            #no error happened
+            error = False
+        return error
+    def getStadiumsSeats(self, matchId):
+        query:str = "select s.rows as rows, s.columns as cols, ARRAY_AGG(r.seat_number)as seats\
+                        from efa.match m\
+                        inner join efa.stadium s\
+                        on m.stadium_id = s.stadium_id\
+                        left join efa.reservation r\
+                        on m.match_id = r.match_id\
+                        where m.match_id = "+str(matchId)+\
+                        " group by s.rows, s.columns;"
+        response = self.db_manager.execute_query(query)
+        return response
+
+    def reserveStadiumsSeats(self, matchId, userId, seats):
+        reserved_seats = []
+        for s in seats:
+            query:str = "INSERT INTO efa.reservation(" \
+                        "match_id, user_id, seat_number)" \
+                        f"VALUES ({matchId}, {userId}, {s});"
+            response = self.db_manager.execute_query_no_return(query)
+            #error = False
+            if response is not None:
+                #some error happened
+                reserved_seats.append(s)
+        return reserved_seats
+    def numberOfRecvSeasts(self,matchId):
+        query:str = "select count(*) from efa.reservation "\
+                    f"where match_id= {matchId}"
+        response = self.db_manager.execute_query(query)
+        return response

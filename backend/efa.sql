@@ -86,7 +86,7 @@ ALTER TABLE efa.referee OWNER TO postgres;
 --
 
 CREATE TABLE efa.reservation (
-    ticket_number varchar(50) NOT NULL,
+    ticket_number serial NOT NULL,
     user_id integer NOT NULL,
     match_id integer NOT NULL,
     seat_number integer NOT NULL

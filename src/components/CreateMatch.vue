@@ -93,18 +93,25 @@
         </b-row>
         <b-row class="myRow">
             <b-col cols="12">
+             <b-alert  v-model="sameForm" variant="danger">
+                            Nothing Is Edited</b-alert>
+            </b-col>
+        </b-row>
+        <b-row class="myRow">
+            <b-col cols="12">
              <b-button v-if="createButton" type="submit" variant="success">CREATE</b-button>
-             <b-button v-if="!createButton" :disabled="disableEditButton" type="submit" 
+             <b-button v-if="!createButton" :disabled="disableEditButton" type="button" 
+                                            @click.prevent="editMatch()"
                                             variant="success">EDIT</b-button>
             </b-col>
         </b-row>
      
     </b-form>
-    
+    <!--
     <b-card class="mt-3" header="Form Data Result">
       <pre class="m-0">{{ form }}</pre>
     </b-card>
-    
+    -->
   </div>
 </template>
 
@@ -115,6 +122,7 @@ const teamsPath = "http://127.0.0.1:5000/getTeams";
 const refereesPath = "http://127.0.0.1:5000/getReferees";
 const linemenPath = "http://127.0.0.1:5000/getLinemen";
 const createMatchPath = "http://127.0.0.1:5000/createMatch";
+const editMatchPath = "http://127.0.0.1:5000/editMatch";
 export default {
   name: 'CreateMatch',
   props:['matchId','match'],
@@ -126,16 +134,29 @@ export default {
       
       return {
         form: {
-            id:0,
-            homeTeam:'',
-            awayTeam:'',
-            stadium:'',
-            referee:'',
-            lineman1:'',
-            lineman2:'',
-            date: '',
-            time:''
+          id:0,
+          homeTeam:'',
+          awayTeam:'',
+          stadium:'',
+          referee:'',
+          lineman1:'',
+          lineman2:'',
+          date: '',
+          time:''
         },
+        /*
+        originalForm:{
+          id:0,
+          homeTeam:'',
+          awayTeam:'',
+          stadium:'',
+          referee:'',
+          lineman1:'',
+          lineman2:'',
+          date: '',
+          time:''
+        }*/
+        originalForm:'',
         /*teams: [ 'M7la', 'Ismaili FC', 'Pyramids','Zamalek'],
         stadiums: ['Borg El Arab', 'El Salam', 'Cairo Stadium', 'Ismaili Stadium', 'M7la Stadium'],
         referees: ['Ahmed hassan', 'Sayed Darwesh','Hossam Hassan'],
@@ -151,27 +172,17 @@ export default {
         errorInForm: false,
         createButton: true,
         disableEditButton: false,
-        seatsReservedFlag: false
+        seatsReservedFlag: false,
+        areEqual: true,
+        sameForm: false
       }
     },
     methods: {
       onSubmit(event) {
         event.preventDefault()
-        //reset flags
-        this.sameTeamAlert = false;
-        this.sameLineman = false;
-        this.errorInForm = false;
-        //check for errors 
-        if (this.form.homeTeam === this.form.awayTeam ) {
-          this.sameTeamAlert = true;
-          this.errorInForm = true;
-        }
-        if (this.form.lineman1 === this.form.lineman2){
-          this.sameLineman = true;
-          this.errorInForm = true;
-        }
+
         //check if form is valid 
-        if (this.errorInForm === false) {
+        if (this.handleFormErrors(0)) {
           var payload = {
             homeTeam: this.form.homeTeam,
             awayTeam: this.form.awayTeam,
@@ -185,14 +196,15 @@ export default {
           axios.post(createMatchPath,payload)
           .then(res => {
             if (res.data == false) {
-              this.form.homeTeam = '',
-              this.form.awayTeam = '',
-              this.form.stadium = '',
-              this.form.referee = '',
-              this.form.lineman1 = '',
-              this.form.lineman2 = '',
-              this.form.date = '',
-              this.form.time = ''
+              this.form.homeTeam = '';
+              this.form.awayTeam = '';
+              this.form.stadium = '';
+              this.form.referee = '';
+              this.form.lineman1 = '';
+              this.form.lineman2 = '';
+              this.form.date = '';
+              this.form.time = '';
+              this.$root.$emit('new-match');
             }
             else{
               console.log(res.data)
@@ -211,7 +223,7 @@ export default {
         this.form.lineman2 = "Dawood EL Gamil",
         this.form.date = "2021-01-31",
         this.form.time = "00:59:00"*/
-        /*
+        
         this.form.homeTeam = this.match.homeTeam,
         this.form.awayTeam = this.match.awayTeam,
         this.form.stadium = this.match.stadium,
@@ -220,8 +232,82 @@ export default {
         this.form.lineman2 = this.match.lineman2,
         this.form.date = this.match.date,
         this.form.time = this.match.time
-        */
-       this.form = this.match
+        this.form.id = this.match.id
+        this.originalForm =  JSON.parse(JSON.stringify(this.form));
+        
+       //this.form = this.match
+      },
+      editMatch(){
+        /*this.sameForm = true
+        this.areEqual = JSON.stringify(this.originalForm)===JSON.stringify(this.form)
+        console.log(this.areEqual)
+        if(this.areEqual === true){
+          this.sameForm = true
+        }*/
+        if (this.handleFormErrors(1)) {
+          var payload = {
+            id: this.form.id,
+            homeTeam: this.form.homeTeam,
+            awayTeam: this.form.awayTeam,
+            stadium: this.form.stadium,
+            referee: this.form.referee,
+            lineman1: this.form.lineman1,
+            lineman2: this.form.lineman2,
+            mdate: this.form.date,
+            mtime: this.form.time
+          }
+          axios.post(editMatchPath,payload)
+          .then(res => {
+            //false meand error = false
+            if (res.data == false) {
+              this.form.homeTeam = '';
+              this.form.awayTeam = '';
+              this.form.stadium = '';
+              this.form.referee = '';
+              this.form.lineman1 = '';
+              this.form.lineman2 = '';
+              this.form.date = '';
+              this.form.time = '';
+              this.$emit('matchedited')
+            }
+            else{
+              console.log(res.data)
+            }
+          })
+          .catch(err => console.log(err))
+        }
+        else{
+          console.log("Don't send Request")
+        }
+      },
+      handleFormErrors(type){
+        //type 1 means edit data
+        if (type == 1) {
+          this.sameForm = false
+          this.areEqual = JSON.stringify(this.originalForm)===JSON.stringify(this.form)
+          if(this.areEqual === true){
+            this.sameForm = true
+            return false //means don't send request
+          }
+        }
+        //reset flags
+        this.sameTeamAlert = false;
+        this.sameLineman = false;
+        this.errorInForm = false;
+        //check for errors 
+        if (this.form.homeTeam === this.form.awayTeam ) {
+          this.sameTeamAlert = true;
+          this.errorInForm = true;
+        }
+        if (this.form.lineman1 === this.form.lineman2){
+          this.sameLineman = true;
+          this.errorInForm = true;
+        }
+        if (this.errorInForm === true) {
+          return false
+        }
+        return true;
+
       }
     },
      beforeMount(){
@@ -258,6 +344,14 @@ export default {
         axios.get(linemenPath,{})
         .then(res => this.linemen = res.data)
         .catch(err => console.log(err))
+      },
+      mounted(){
+        //catch the global event of stadium added 
+        this.$root.$on('stadium-added',()  =>{
+          axios.get(stadiumsPath,{})
+          .then(res => this.stadiums =  res.data)
+          .catch(err => console.log(err))
+        })
       }
 }
 </script>
