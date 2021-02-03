@@ -1,0 +1,8 @@
+insert into efa.referee values(1,'gehad gresha');
+insert into efa.linesman values(1,'gehad gresha line');
+insert into efa.linesman values(2,'gehad gresha line_2');
+insert into efa.stadium values(1,'ma7la ariena',10,10);
+insert into efa.teams values(1,'Zamalek');
+insert into efa.teams values(2,'Ma7la');
+insert into efa.match values(2,1,1,2,1,1,2,'2021-02-07','11:00:00');
+insert into efa.reservation values(4,1,2,20);
