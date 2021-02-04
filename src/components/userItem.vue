@@ -1,9 +1,9 @@
 <template>
   <div class="user-item">
-    <div>
+    <div style="text-align:left;">
     <!--<input type="checkbox" v-on:click="markUser" />-->
       <b-badge>{{user[1]}}</b-badge>
-      <button @click="$emit('del-user', user[0])" style="float:right;" title="delete user">&#10062;</button>
+      <button @click="$emit('del-user', pendingUser[0])" class="del" title="delete user">&#10062;</button>
     </div>
   </div>
 </template>
@@ -31,7 +31,6 @@ export default {
   }
 
   .del {
-    background: #5f5f5f;
     color: #fff;
     border: none;
     padding: 5px 9px;

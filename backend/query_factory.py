@@ -139,6 +139,29 @@ class QueryFactory:
         return response
 
     '''
+        Users related queries : show,delete,search
+    '''
+    def getAllUsers(self):
+        query = "SELECT user_id,user_name from efa.user where status = 0;"
+        response = self.db_manager.execute_query(query)
+        # Fetch result
+        return response
+    
+    def searchUser(self,userName):
+        #userName = "%"+userName+"%"
+        query = "SELECT user_id,user_name from efa.user where status = 0 "\
+            f"and lower(user_name) Like lower('%{userName}%');"
+        response = self.db_manager.execute_query(query)
+        return response
+    
+    def deleteUser(self,id):
+        query = f"DELETE FROM efa.user where user_id = {int(id)}"
+        response = self.db_manager.execute_query_no_return(query)
+        if response is None:
+            return "Success"
+        return response
+
+    '''
         Pending Users related queries : show,approve,search
     '''
     def getAllPendingUsers(self):
@@ -166,9 +189,11 @@ class QueryFactory:
         Tickets related queries : show,delete
     '''
     def showTickets(self,id):
-        query = "select reservation.ticket_number,t1.team_name,t2.team_name,match.mdate from efa.reservation inner join efa.match "\
-         "on match.match_id = reservation.match_id inner join efa.teams t1 on t1.team_id = match.home_team inner join "\
-        f"efa.teams t2 on t2.team_id = match.away_team where reservation.user_id = {int(id)}"
+        query = "select reservation.ticket_number,t1.team_name,t2.team_name,match.mdate,match.mtime,stadium.stadium_name,"\
+        "reservation.seat_number from efa.reservation inner join efa.match "\
+        "on match.match_id = reservation.match_id inner join efa.teams t1 on t1.team_id = match.home_team inner join "\
+        "efa.teams t2 on t2.team_id = match.away_team inner join efa.stadium on stadium.stadium_id = match.stadium_id "\
+        f"where reservation.user_id = {int(id)}"
         response = self.db_manager.execute_query(query)
         return response
     def deleteTicket(self,ticketID):
