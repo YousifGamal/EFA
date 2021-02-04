@@ -8,6 +8,7 @@ import Users from '../views/UsersView.vue'
 import Pending from '../views/PendingView.vue'
 import Tickets from '../views/TicketsView.vue'
 import Console from '../views/ConsoleView.vue'
+import User from '../views/User.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -60,6 +61,11 @@ const routes = [
         component: Pending
       }
     ]
+  },
+  {
+    path:'/user',
+    name:'user',
+    component: User
   }
 ]
 
