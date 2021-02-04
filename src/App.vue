@@ -13,7 +13,10 @@
   text-align: center;
   color: #2c3e50;
 }
-
+.row{
+  margin-left: 0;
+  margin-right: 0;
+}
 
 #nav {
   padding: 30px;

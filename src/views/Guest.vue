@@ -114,4 +114,8 @@ export default {
 .myRow{
     padding-top: 20px;
 }
+.row{
+  margin-left: 0;
+  margin-right: 0;
+}
 </style>
