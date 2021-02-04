@@ -2,9 +2,10 @@
   <div>
     <div class="user-item">
     <!--<input type="checkbox" v-on:click="markUser" />-->
-    <b-card  border-variant="success" header="MATCH" text-variant="black">
+    <b-card  border-variant="success" header="Ticket" text-variant="black">
       <b-card-title>
         <b-badge>{{ticket[1]}}</b-badge>  vs  <b-badge>{{ticket[2]}}  </b-badge>
+        <button @click="$emit('del-ticket', ticket[0],ticket[3])" class="del" style="float:right;" title="delete ticket">&#10062;</button>
       </b-card-title>
       <b-card-sub-title sub-title-text-variant = "black" sub-title-tag="h5">
         {{ticket[3]}}, {{ticket[4]}}, {{ticket[5]}}
@@ -12,7 +13,6 @@
       <b-card-text>
         Seat Number {{ticket[6]}}
       </b-card-text>
-      <button @click="$emit('del-ticket', ticket[0],ticket[3])" class="del" style="float:right;" title="delete ticket">&#10062;</button>
     </b-card>
     </div>
   </div>

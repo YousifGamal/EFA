@@ -14,6 +14,7 @@
 <script>
 import ticketList from '../components/ticketList'
 import axios from 'axios'
+import Pusher from 'pusher-js';
 
 export default {
   name: 'TicketsView',
@@ -37,12 +38,25 @@ export default {
             .catch(err => console.log(err))
             this.tickets = this.tickets.filter(ticket => ticket[0] !== id);
         }
+    },
+    subscribe () {
+    let pusher = new Pusher('53327a58e47a84312542', { cluster: 'eu' })
+    pusher.subscribe('seats')
+    pusher.bind('seat-reserved', data => {
+      console.log(data);
+      axios.get("http://localhost:5000/showusertickets/"+1) // lazem tt3dl
+      .then(res => this.tickets = res.data)
+      .catch(err => console.log(err))  
+    })
     }
   },
-  created(){
+  beforeMount(){
+    
     axios.get("http://localhost:5000/showusertickets/"+1) // lazem tt3dl
     .then(res => this.tickets = res.data)
     .catch(err => console.log(err))
+  },created(){
+    this.subscribe();
   }
 }
 </script>
