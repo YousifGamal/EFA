@@ -1,0 +1,3 @@
+pip3 install flask-jwt-extended
+export FLASK_ENV=development
+flask run

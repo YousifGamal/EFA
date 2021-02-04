@@ -1,14 +1,16 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify , make_response,render_template, redirect, url_for, flash, session
 from flask_cors import CORS, cross_origin
 #from models import User, Course, Student, StaffMember, Semester, Requirement
 from query_factory import QueryFactory
 from datetime import datetime
+import time,hashlib
 
 app = Flask(__name__)
+app.secret_key = "abcd"
 CORS(app, support_credentials=True)
 query_factory = QueryFactory()
 query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="jimmy")
-
+cookies = []
 
 @app.route('/AddStadium',methods=['POST'])
 def addStadium():
