@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <div v-bind:key="ticket[0]" v-for="ticket in ticketsList">
             <ticketItemList v-bind:ticket="ticket" v-on:del-ticket="$emit('del-ticket',ticket[0],ticket[3])"/>
         </div>

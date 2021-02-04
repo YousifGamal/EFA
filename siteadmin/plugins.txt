@@ -1,3 +1,8 @@
 pip3 install flask-jwt-extended
 export FLASK_ENV=development
 flask run
+npm install -S pusher-js
+pip3 install pusher
+npm install --save @fortawesome/fontawesome-free
+npm install --save @fortawesome/free-solid-svg-icons
+npm i --save @fortawesome/vue-fontawesome@latest

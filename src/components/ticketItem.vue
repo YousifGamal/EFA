@@ -1,8 +1,8 @@
 <template>
-  <div class="user-item">
+  <div>
     <div>
     <!--<input type="checkbox" v-on:click="markUser" />-->
-      <b-badge>{{ticket[1]}}</b-badge>vs<b-badge>{{ticket[2]}}</b-badge>
+      <b-badge>{{ticket[1]}}</b-badge>  vs  <b-badge>{{ticket[2]}}</b-badge>
       <button @click="$emit('del-ticket', ticket[0],ticket[3])" style="float:right;" title="delete ticket">&#10062;</button>
     </div>
   </div>
