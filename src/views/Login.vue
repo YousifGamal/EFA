@@ -254,7 +254,7 @@ export default {
 
     login_guest() {
       // redirect to guest page
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "guest" });
     },
     signup() {
       const myForm = $(".sign-up-form");

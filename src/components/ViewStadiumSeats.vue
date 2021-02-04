@@ -49,6 +49,20 @@
                 }
                 this.generateSeats(this.rows, this.cols);
             })
+            .catch(err => console.log(err)) 
+          })
+          pusher.subscribe('matches')
+          pusher.bind('match-edited', data => {
+            console.log(data);
+            axios.get(seatsPath,{params:{match_id: this.matchId}})
+            .then(res => {this.rows =  res.data[0][0]; 
+                this.cols = res.data[0][1];
+                this.reservedSeats = res.data[0][2];
+                if(this.reservedSeats[0]==null){ 
+                  this.reservedSeats=[]
+                }
+                this.generateSeats(this.rows, this.cols);
+            })
             .catch(err => console.log(err))
           })
       },

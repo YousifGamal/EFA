@@ -1,15 +1,14 @@
 <template>
     <b-container fluid style="padding-left:0;padding-right:0">
       <b-navbar toggleable="lg" type="dark" variant="dark">
-          <b-navbar-brand href="/user">Home</b-navbar-brand>
-          <b-navbar-brand href="/manager">My Tickets</b-navbar-brand>
+          <b-navbar-brand href="/guest">Home</b-navbar-brand>
+
 
           <b-collapse id="nav-collapse" is-nav>
 
             <b-navbar-nav class="ml-auto" >
-
-              <b-navbar-brand href="/update">Profile</b-navbar-brand>
-              <b-navbar-brand href="/login">Logout</b-navbar-brand>
+                <!-- to do update href-->
+              <b-navbar-brand href="/login">Login/signup</b-navbar-brand>
             </b-navbar-nav>
           </b-collapse>
       </b-navbar>
@@ -19,7 +18,7 @@
               <b-row class="myRow">
                 <b-col cols="12">
                   <div v-bind:key="match.id" v-for="match in matches.slice(start,end)">
-                  <MatchCard v-on:matchedited="refreshMatches" v-bind:type="1" v-bind:match="match"/>
+                  <MatchCard v-on:matchedited="refreshMatches" v-bind:type="2" v-bind:match="match"/>
                   </div>
                 </b-col>
               </b-row>
@@ -41,7 +40,7 @@ import axios from 'axios';
 import Pusher from 'pusher-js'
 const matchesPath = "http://127.0.0.1:5000/getMatches";
 export default {
-  name: 'User',
+  name: 'Guest',
   components: {
     MatchCard
   },
