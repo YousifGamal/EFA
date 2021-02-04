@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card bg-variant="success" text-variant="black">
+    <b-card  border-variant="success" header="MATCH" text-variant="black">
         <b-card-title>
         {{match.homeName}} vs. {{match.awayName}}
         </b-card-title>
@@ -11,7 +11,7 @@
         Main Refree: {{match.refName}}, Linesmen: {{match.lName1}}, {{match.lName2}}
         </b-card-text>
         <b-button v-show="type" :disabled="disbaleEdit" size="lg" @click.prevent="toggleEditMatch()"  variant="outline-dark">{{editMatchButtonText}}</b-button>  
-        <b-button v-show="type" size="lg" @click.prevent="toggleStadium()" variant="outline-dark">Seats Details</b-button>
+        <b-button v-show="type" size="lg" @click.prevent="toggleStadium()" variant="outline-dark" >Seats Details</b-button>
     </b-card>
     <CreateMatch v-if="editMatch"  v-on:matchedited="closeCreateMatchCard" 
     v-bind:match="match"  v-bind:matchId="match.id" ></CreateMatch>
