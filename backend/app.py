@@ -177,3 +177,38 @@ def numberOfReserSeats():
     mId = request.args.get("mid")
     response = query_factory.numberOfRecvSeasts(mId)
     return jsonify(response[0][0])
+
+'''
+    show/delete/approve pending users functions
+'''
+
+@app.route("/showpendingusers/")
+def showAllPendingUsers():
+    response = query_factory.getAllPendingUsers()
+    print(response)
+    return jsonify(response)
+
+@app.route("/searchforpending/<string:userName>")
+def searchPendingUser(userName):
+    response = query_factory.searchPendingUser(userName)
+    print(response)
+    return jsonify(response)
+
+@app.route("/approvepending/<int:id>")
+def approvePending(id):
+    response = query_factory.approvePendingUser(id)
+    return response
+
+'''
+    show/delete tickets functions
+'''
+@app.route("/showusertickets/<int:id>")
+def showUserTickets(id):
+    response = query_factory.showTickets(id)
+    print(response)
+    return jsonify(response)
+
+@app.route("/deleteticket/<int:ticketId>")
+def deleteUserTicket(ticketId):
+    response = query_factory.deleteTicket(ticketId)
+    return response

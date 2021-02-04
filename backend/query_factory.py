@@ -137,3 +137,44 @@ class QueryFactory:
                     f"where match_id= {matchId}"
         response = self.db_manager.execute_query(query)
         return response
+
+    '''
+        Pending Users related queries : show,approve,search
+    '''
+    def getAllPendingUsers(self):
+        query = "SELECT user_id,user_name from efa.user where status = 1;"
+        response = self.db_manager.execute_query(query)
+        # Fetch result
+        return response
+    
+    def searchPendingUser(self,userName):
+        #userName = "%"+userName+"%"
+        query = "SELECT user_id,user_name from efa.user where status = 1 "\
+            f"and lower(user_name) Like lower('%{userName}%');"
+        response = self.db_manager.execute_query(query)
+        return response
+
+    def approvePendingUser(self,id):
+        #userName = "%"+userName+"%"
+        query = f"update efa.user set status = 0 where user_id = {int(id)};"
+        response = self.db_manager.execute_query_no_return(query)
+        if response is None:
+            return "Success"
+        return response
+
+    '''
+        Tickets related queries : show,delete
+    '''
+    def showTickets(self,id):
+        query = "select reservation.ticket_number,t1.team_name,t2.team_name,match.mdate from efa.reservation inner join efa.match "\
+         "on match.match_id = reservation.match_id inner join efa.teams t1 on t1.team_id = match.home_team inner join "\
+        f"efa.teams t2 on t2.team_id = match.away_team where reservation.user_id = {int(id)}"
+        response = self.db_manager.execute_query(query)
+        return response
+    def deleteTicket(self,ticketID):
+        query = f"DELETE FROM efa.reservation where reservation.ticket_number = {int(ticketID)}"
+        response = self.db_manager.execute_query_no_return(query)
+        if response is None:
+            return "Succes"
+        return response
+    

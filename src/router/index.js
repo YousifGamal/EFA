@@ -6,6 +6,10 @@ import Login from '../views/Login.vue'
 import UpdateProfile from '../views/UpdateProfile.vue'
 import User from '../views/User.vue'
 import Guest from '../views/Guest.vue'
+import Users from '../views/UsersView.vue'
+import Pending from '../views/PendingView.vue'
+import Tickets from '../views/TicketsView.vue'
+import Console from '../views/ConsoleView.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -51,6 +55,29 @@ const routes = [
     path:'/guest',
     name:'guest',
     component: Guest
+  },
+  {
+    path: '/tickets', // lazem tt3dl
+    name: 'Tickets',
+    component: Tickets
+  },
+  
+  {
+    path: '/console/', // lazem tt3dl
+    name: 'Console',
+    component: Console,
+    children: [
+      {
+        path: '/console/Users',
+        name: 'Users',
+        component: Users
+      },
+      {
+        path: '/console/Pending',
+        name: 'Pending',
+        component: Pending
+      }
+    ]
   }
 ]
 
