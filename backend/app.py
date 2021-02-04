@@ -244,5 +244,8 @@ def showUserTickets(id):
 
 @app.route("/deleteticket/<int:ticketId>")
 def deleteUserTicket(ticketId):
+    print(ticketId)
     response = query_factory.deleteTicket(ticketId)
+    data="yaraaab"
+    pusher.trigger('seats', 'seat-reserved', data)
     return response

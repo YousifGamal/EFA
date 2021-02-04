@@ -44,7 +44,7 @@
             .then(res => {this.rows =  res.data[0][0]; 
                 this.cols = res.data[0][1];
                 this.reservedSeats = res.data[0][2];
-                if(this.reservedSeats[0]==null){ 
+                if(this.reservedSeats[0]===null){ 
                   this.reservedSeats=[]
                 }
                 this.generateSeats(this.rows, this.cols);
@@ -58,7 +58,7 @@
             .then(res => {this.rows =  res.data[0][0]; 
                 this.cols = res.data[0][1];
                 this.reservedSeats = res.data[0][2];
-                if(this.reservedSeats[0]==null){ 
+                if(this.reservedSeats[0]===null){ 
                   this.reservedSeats=[]
                 }
                 this.generateSeats(this.rows, this.cols);
@@ -67,6 +67,8 @@
           })
       },
       generateSeats:function(r,c) {
+        this.isClicked=[];
+        this.isReserved=[];
         for (let y = 1; y <= r; ++y) {
           for (let x = 1; x <= c; ++x) {
             this.isClicked.push(false);            
@@ -84,7 +86,7 @@
       .then(res => {this.rows =  res.data[0][0]; 
           this.cols = res.data[0][1];
           this.reservedSeats = res.data[0][2];
-          if(this.reservedSeats[0]==null){ 
+          if(this.reservedSeats[0]===null){ 
             this.reservedSeats=[]
             
           }
