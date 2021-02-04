@@ -29,6 +29,7 @@ import CreateMatch from '@/components/CreateMatch.vue'
 import ViewStadiumSeats from '@/components/ViewStadiumSeats.vue'
 import ReserveStadiumSeats from '@/components/ReserveStadiumSeats.vue'
 import axios from 'axios';
+import Pusher from 'pusher-js';
 const numberOfResrvSeatsPath = "http://127.0.0.1:5000/numberOfReservedSeats";
 
 export default {
@@ -48,6 +49,9 @@ export default {
       showReserve:false
     }
   },
+  created () {
+    this.subscribe()
+  },
   methods:{
     toggleEditMatch(){
       this.editMatch = !this.editMatch
@@ -61,6 +65,24 @@ export default {
     },
     toggleReserveSeats(){
       this.showReserve = !this.showReserve
+    },
+    subscribe () {
+    let pusher = new Pusher('53327a58e47a84312542', { cluster: 'eu' })
+    pusher.subscribe('seats')
+    pusher.bind('seat-reserved', data => {
+      console.log(data);
+      axios.get(numberOfResrvSeatsPath,{params:{mid:this.match.id}})
+      .then(res => {
+        if(res.data == 0){
+          this.disbaleEdit = false
+        }
+        else{
+          this.disbaleEdit = true
+        }
+      })
+      .catch(err => console.log(err))
+
+        })
     }
   },
   beforeMount(){
