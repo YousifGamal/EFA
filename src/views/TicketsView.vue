@@ -1,8 +1,18 @@
 <template>
   <div>
-    <!--
-    Search for ticket : 
-    <input type="text" name="search" v-model="searchInput" placeholder="search for user..." @keyup="searchUser" />-->
+    <b-navbar toggleable="lg" type="dark" variant="dark">
+          <b-navbar-brand href="/user">Home</b-navbar-brand>
+          <b-navbar-brand href="/Tickets">My Tickets</b-navbar-brand>
+
+          <b-collapse id="nav-collapse" is-nav>
+
+            <b-navbar-nav class="ml-auto" >
+
+              <b-navbar-brand href="/update">Profile</b-navbar-brand>
+              <b-navbar-brand href="/login">Logout</b-navbar-brand>
+            </b-navbar-nav>
+          </b-collapse>
+      </b-navbar>
     <div class="container">
       <b-card border-variant="success" text-variant="black" header="My Tickets">
         <ticketList v-bind:ticketsList="tickets" v-on:del-ticket="deleteTicket"/>
