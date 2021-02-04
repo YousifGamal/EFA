@@ -10,11 +10,11 @@
         <b-card-text>
         Main Refree: {{match.refName}}, Linesmen: {{match.lName1}}, {{match.lName2}}
         </b-card-text>
-        <b-button v-show="type" :disabled="disbaleEdit" size="lg" @click.prevent="toggleEditMatch()"  
+        <b-button v-show="type === 0" :disabled="disbaleEdit" size="lg" @click.prevent="toggleEditMatch()"  
         variant="outline-dark" class="btl">{{editMatchButtonText}}</b-button>  
-        <b-button v-show="type" size="lg" @click.prevent="toggleStadium()" 
+        <b-button v-show="type === 0 || type === 2" size="lg" @click.prevent="toggleStadium()" 
         variant="outline-dark" class="btr">Seats Details</b-button>
-        <b-button v-show="!type" @click.prevent="toggleReserveSeats()" variant="outline-dark">Seats Details</b-button>
+        <b-button v-show="type === 1" size="lg" @click.prevent="toggleReserveSeats()" variant="outline-dark">Reserve Seats</b-button>
     </b-card>
     <CreateMatch v-if="editMatch"  v-on:matchedited="closeCreateMatchCard" 
     v-bind:match="match"  v-bind:matchId="match.id" ></CreateMatch>

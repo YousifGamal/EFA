@@ -1,9 +1,9 @@
 <template>
-    <b-container fluid >
+    <b-container fluid style="padding-left:0;padding-right:0">
       <b-navbar toggleable="lg" type="dark" variant="dark">
           <b-navbar-brand href="/">Home</b-navbar-brand>
-          <b-navbar-brand href="/manager">Manager</b-navbar-brand>
-          <b-navbar-brand href="/user">User</b-navbar-brand>
+          <b-navbar-brand href="/manager">My Tickets</b-navbar-brand>
+          
 
 
           <b-collapse id="nav-collapse" is-nav>
@@ -21,7 +21,7 @@
               <b-row class="myRow">
                 <b-col cols="12">
                   <div v-bind:key="match.id" v-for="match in matches.slice(start,end)">
-                  <MatchCard v-on:matchedited="refreshMatches" v-bind:type="false" v-bind:match="match"/>
+                  <MatchCard v-on:matchedited="refreshMatches" v-bind:type="1" v-bind:match="match"/>
                   </div>
                 </b-col>
               </b-row>

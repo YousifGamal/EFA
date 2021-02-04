@@ -5,6 +5,7 @@ import Manager from '../views/Manager.vue'
 import Login from '../views/Login.vue'
 import UpdateProfile from '../views/UpdateProfile.vue'
 import User from '../views/User.vue'
+import Guest from '../views/Guest.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -40,6 +41,11 @@ const routes = [
     path:'/user',
     name:'user',
     component: User
+  },
+  {
+    path:'/guest',
+    name:'guest',
+    component: Guest
   }
 ]
 
