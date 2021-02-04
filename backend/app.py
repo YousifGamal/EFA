@@ -30,6 +30,8 @@ def addStadium():
     if(res):
         print("stadium was not added an error occured")
     else:
+        data = ""
+        pusher.trigger('matches', 'stadium-added', data)
         print("Stadium added sucessfully")
     response = {'res':res}
     return jsonify(response)
@@ -98,6 +100,8 @@ def addMatch():
     if(response):
         print("Match was not added an error occured")
     else:
+        data = ""
+        pusher.trigger('matches', 'match-added', data)
         print("Match added sucessfully")
     return jsonify(response)
 
@@ -118,6 +122,8 @@ def editMatch():
     if(response):
         print("Match was not edited an error occured")
     else:
+        data = ""
+        pusher.trigger('matches', 'match-edited', data)
         print("Match edited sucessfully")
     return jsonify(response)
     
