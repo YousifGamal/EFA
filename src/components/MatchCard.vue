@@ -10,8 +10,10 @@
         <b-card-text>
         Main Refree: {{match.refName}}, Linesmen: {{match.lName1}}, {{match.lName2}}
         </b-card-text>
-        <b-button v-show="type" :disabled="disbaleEdit" size="lg" @click.prevent="toggleEditMatch()"  variant="outline-dark">{{editMatchButtonText}}</b-button>  
-        <b-button v-show="type" size="lg" @click.prevent="toggleStadium()" variant="outline-dark" >Seats Details</b-button>
+        <b-button v-show="type" :disabled="disbaleEdit" size="lg" @click.prevent="toggleEditMatch()"  
+        variant="outline-dark" class="btl">{{editMatchButtonText}}</b-button>  
+        <b-button v-show="type" size="lg" @click.prevent="toggleStadium()" 
+        variant="outline-dark" class="btr">Seats Details</b-button>
         <b-button v-show="!type" @click.prevent="toggleReserveSeats()" variant="outline-dark">Seats Details</b-button>
     </b-card>
     <CreateMatch v-if="editMatch"  v-on:matchedited="closeCreateMatchCard" 
@@ -79,4 +81,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.btl{
+  margin-right: 2%;
+}
+.btr{
+  margin-left: 2%;
+}
+
 </style>
