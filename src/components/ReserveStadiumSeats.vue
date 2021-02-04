@@ -146,23 +146,28 @@
         pusher.subscribe('seats')
         pusher.bind('seat-reserved', data => {
           console.log(data);
+          this.reservedSeatsBeforehead=[];
           axios.get(seatsPath,{params:{match_id: this.matchId}})
           .then(res => {this.rows =  res.data[0][0]; 
               this.cols = res.data[0][1];
               this.reservedSeatsBeforehead = res.data[0][2];
-              if(this.reservedSeats[0]==null) this.reservedSeats=[]
+              console.log(this.reservedSeatsBeforehead);
+              if(this.reservedSeatsBeforehead[0]===null) this.reservedSeatsBeforehead=[]
               this.generateSeats(this.rows, this.cols);
               })
           .catch(err => console.log(err))
         })
       },
       generateSeats:function(r,c) {
+        this.isClicked=[];
+        this.isReserved=[];
         for (let y = 1; y <= r; ++y) {
           for (let x = 1; x <= c; ++x) {
             this.isClicked.push(false);
             this.isReserved.push(false);            
           }
         }
+        console.log(this.reservedSeatsBeforehead);
         for(let i=0; i<this.reservedSeatsBeforehead.length; i++){
           this.isReserved[this.reservedSeatsBeforehead[i]] = true;
         }
@@ -173,7 +178,7 @@
       .then(res => {this.rows =  res.data[0][0]; 
           this.cols = res.data[0][1];
           this.reservedSeatsBeforehead = res.data[0][2];
-          if(this.reservedSeats[0]==null) this.reservedSeats=[]
+          if(this.reservedSeatsBeforehead[0]===null) this.reservedSeatsBeforehead=[]
           this.generateSeats(this.rows, this.cols);
           })
       .catch(err => console.log(err))

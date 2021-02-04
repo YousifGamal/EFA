@@ -37,11 +37,6 @@ const routes = [
     component: Manager
   },
   {
-    path:'/login',
-    name:'Login',
-    component:Login
-  },
-  {
     path:'/update',
     name:'UpdateProfile',
     component:UpdateProfile
