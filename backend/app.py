@@ -179,6 +179,28 @@ def numberOfReserSeats():
     return jsonify(response[0][0])
 
 '''
+    show/delete users functions
+'''
+
+@app.route("/showallusers/")
+def showAllUsers():
+    response = query_factory.getAllUsers()
+    print(response)
+    return jsonify(response)
+
+@app.route("/searchforuser/<string:userName>")
+def searchUser(userName):
+    response = query_factory.searchUser(userName)
+    print(response)
+    return jsonify(response)
+
+@app.route("/deleteuser/<int:id>")
+def deleteUser(id):
+    response = query_factory.deleteUser(id)
+    return response
+
+
+'''
     show/delete/approve pending users functions
 '''
 
@@ -205,8 +227,20 @@ def approvePending(id):
 @app.route("/showusertickets/<int:id>")
 def showUserTickets(id):
     response = query_factory.showTickets(id)
+    tickets = []
     print(response)
-    return jsonify(response)
+    for ticket in response:
+        dec = {}
+        dec[0] = ticket[0]
+        dec[1] = ticket[1]
+        dec[2] = ticket[2]
+        dec[3] = str(ticket[3])
+        dec[4] = str(ticket[4])
+        dec[5] = ticket[5]
+        dec[6] = ticket[6]
+        tickets.append(dec)
+    print(tickets)
+    return jsonify(tickets)
 
 @app.route("/deleteticket/<int:ticketId>")
 def deleteUserTicket(ticketId):
