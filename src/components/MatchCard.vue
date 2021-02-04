@@ -12,10 +12,12 @@
         </b-card-text>
         <b-button v-show="type" :disabled="disbaleEdit" size="lg" @click.prevent="toggleEditMatch()"  variant="outline-dark">{{editMatchButtonText}}</b-button>  
         <b-button v-show="type" size="lg" @click.prevent="toggleStadium()" variant="outline-dark" >Seats Details</b-button>
+        <b-button v-show="!type" @click.prevent="toggleReserveSeats()" variant="outline-dark">Seats Details</b-button>
     </b-card>
     <CreateMatch v-if="editMatch"  v-on:matchedited="closeCreateMatchCard" 
     v-bind:match="match"  v-bind:matchId="match.id" ></CreateMatch>
     <ViewStadiumSeats  v-if="showStadium" v-bind:matchId="match.id"></ViewStadiumSeats>
+    <ReserveStadiumSeats  v-show="showReserve" v-bind:matchId="match.id" v-bind:userId="1"></ReserveStadiumSeats>
   </div>
 </template>
 
@@ -23,6 +25,7 @@
 
 import CreateMatch from '@/components/CreateMatch.vue'
 import ViewStadiumSeats from '@/components/ViewStadiumSeats.vue'
+import ReserveStadiumSeats from '@/components/ReserveStadiumSeats.vue'
 import axios from 'axios';
 const numberOfResrvSeatsPath = "http://127.0.0.1:5000/numberOfReservedSeats";
 
@@ -30,7 +33,8 @@ export default {
   name: 'MatchCard',
   components: {
     CreateMatch,
-    ViewStadiumSeats
+    ViewStadiumSeats,
+    ReserveStadiumSeats
   },
   props:["match","type"], 
   data(){
@@ -38,7 +42,8 @@ export default {
       editMatch: false,
       editMatchButtonText:'Edit Match Details',
       showStadium:false,
-      disbaleEdit:false
+      disbaleEdit:false,
+      showReserve:false
     }
   },
   methods:{
@@ -51,6 +56,9 @@ export default {
     closeCreateMatchCard(){
       this.toggleEditMatch();
       this.$emit('matchedited')
+    },
+    toggleReserveSeats(){
+      this.showReserve = !this.showReserve
     }
   },
   beforeMount(){

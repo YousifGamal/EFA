@@ -7,8 +7,6 @@
                 <b-col cols="12">
                   <div v-bind:key="match.id" v-for="match in matches">
                   <MatchCard v-on:matchedited="refreshMatches" v-bind:type="false" v-bind:match="match"/>
-                  <b-button @click.prevent="toggleReserveSeats(match)" variant="outline-dark">Seats Details</b-button>
-                  <ReserveStadiumSeats  v-show="match.show" v-bind:matchId="match.id" v-bind:userId="1"></ReserveStadiumSeats>
                   </div>
                 </b-col>
               </b-row>
@@ -20,14 +18,12 @@
 
 <script>
 import MatchCard from '@/components/MatchCard.vue'
-import ReserveStadiumSeats from '@/components/ReserveStadiumSeats.vue'
 import axios from 'axios';
 const matchesPath = "http://127.0.0.1:5000/getMatches";
 export default {
   name: 'User',
   components: {
-    MatchCard,
-    ReserveStadiumSeats
+    MatchCard
   },
   data(){
     return{
