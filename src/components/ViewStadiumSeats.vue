@@ -17,6 +17,7 @@
 
 <script>
   import axios from 'axios';
+  import Pusher from 'pusher-js'; // import Pusher
   const seatsPath = "http://127.0.0.1:5000/getStadiumsSeats";
   export default {
     name: 'ViewStadiumSeats',
@@ -29,7 +30,28 @@
         reservedSeats: []
       }
     },
+    created () {
+    // ...
+      this.subscribe()
+    },
     methods: {
+        subscribe () {
+          let pusher = new Pusher('53327a58e47a84312542', { cluster: 'eu' })
+          pusher.subscribe('seats')
+          pusher.bind('seat-reserved', data => {
+            console.log(data);
+            axios.get(seatsPath,{params:{match_id: this.matchId}})
+            .then(res => {this.rows =  res.data[0][0]; 
+                this.cols = res.data[0][1];
+                this.reservedSeats = res.data[0][2];
+                if(this.reservedSeats[0]==null){ 
+                  this.reservedSeats=[]
+                }
+                this.generateSeats(this.rows, this.cols);
+            })
+            .catch(err => console.log(err))
+          })
+      },
       generateSeats:function(r,c) {
         for (let y = 1; y <= r; ++y) {
           for (let x = 1; x <= c; ++x) {

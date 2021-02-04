@@ -117,6 +117,7 @@
 
 <script>
 import axios from 'axios';
+import Pusher from 'pusher-js'
 const stadiumsPath = "http://127.0.0.1:5000/getStadiums";
 const teamsPath = "http://127.0.0.1:5000/getTeams";
 const refereesPath = "http://127.0.0.1:5000/getReferees";
@@ -177,6 +178,9 @@ export default {
         sameForm: false
       }
     },
+    created () {
+    this.subscribe()
+    },
     methods: {
       onSubmit(event) {
         event.preventDefault()
@@ -204,7 +208,7 @@ export default {
               this.form.lineman2 = '';
               this.form.date = '';
               this.form.time = '';
-              this.$root.$emit('new-match');
+              //this.$root.$emit('new-match');
             }
             else{
               console.log(res.data)
@@ -308,6 +312,16 @@ export default {
         }
         return true;
 
+      },
+      subscribe () {
+        let pusher = new Pusher('53327a58e47a84312542', { cluster: 'eu' })
+        pusher.subscribe('matches')
+        pusher.bind('stadium-added', data => {
+          console.log(data);
+          axios.get(stadiumsPath,{})
+          .then(res => this.stadiums =  res.data)
+          .catch(err => console.log(err))
+          })
       }
     },
      beforeMount(){
@@ -344,7 +358,7 @@ export default {
         axios.get(linemenPath,{})
         .then(res => this.linemen = res.data)
         .catch(err => console.log(err))
-      },
+      }/*
       mounted(){
         //catch the global event of stadium added 
         this.$root.$on('stadium-added',()  =>{
@@ -352,7 +366,7 @@ export default {
           .then(res => this.stadiums =  res.data)
           .catch(err => console.log(err))
         })
-      }
+      }*/
 }
 </script>
 

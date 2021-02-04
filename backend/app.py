@@ -3,13 +3,21 @@ from flask_cors import CORS, cross_origin
 #from models import User, Course, Student, StaffMember, Semester, Requirement
 from query_factory import QueryFactory
 from datetime import datetime
+from pusher import Pusher
 
 app = Flask(__name__)
 CORS(app, support_credentials=True)
 query_factory = QueryFactory()
 query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="jimmy")
 
-
+    # configure pusher object
+pusher = Pusher(
+      app_id='1149611',
+      key='53327a58e47a84312542',
+      secret='aa52a12e8d34e1d87b04',
+      cluster='eu',
+      ssl=True
+    )
 
 @app.route('/AddStadium',methods=['POST'])
 def addStadium():
@@ -22,6 +30,8 @@ def addStadium():
     if(res):
         print("stadium was not added an error occured")
     else:
+        data = ""
+        pusher.trigger('matches', 'stadium-added', data)
         print("Stadium added sucessfully")
     response = {'res':res}
     return jsonify(response)
@@ -90,6 +100,8 @@ def addMatch():
     if(response):
         print("Match was not added an error occured")
     else:
+        data = ""
+        pusher.trigger('matches', 'match-added', data)
         print("Match added sucessfully")
     return jsonify(response)
 
@@ -110,6 +122,8 @@ def editMatch():
     if(response):
         print("Match was not edited an error occured")
     else:
+        data = ""
+        pusher.trigger('matches', 'match-edited', data)
         print("Match edited sucessfully")
     return jsonify(response)
     
@@ -154,6 +168,8 @@ def addSeats():
     userId = reservation.get('userId')
     seats = reservation.get('seats')
     reserved_seats = query_factory.reserveStadiumsSeats(matchId,userId,seats)
+    data=""
+    pusher.trigger('seats', 'seat-reserved', data)
     return jsonify(reserved_seats)
 
 @app.route('/numberOfReservedSeats',methods=['GET'])
