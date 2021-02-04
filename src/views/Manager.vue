@@ -23,9 +23,15 @@
               </b-row>
               <b-row class="myRow">
                 <b-col cols="12">
-                  <div v-bind:key="match.id" v-for="match in matches">
+                  <div  v-bind:key="match.id" v-for="match in matches.slice(start,end)">
                   <MatchCard v-bind:type="true" v-on:matchedited="refreshMatches" v-bind:match="match"/>
                   </div>
+                </b-col>
+              </b-row>
+              <b-row class="myRow">
+                <b-col cols="12">
+                  <b-button :disabled="disablePrev" @click.prevent="retreat()" variant="outline-success"> Previous</b-button> - 
+                  <b-button :disabled="disableNext" @click.prevent="advance()" variant="outline-success"> Next</b-button>
                 </b-col>
               </b-row>
             </b-col>
@@ -39,6 +45,7 @@ import MatchCard from '@/components/MatchCard.vue'
 import CreateMatch from '@/components/CreateMatch.vue'
 import AddStadium from '@/components/AddStadium.vue'
 import axios from 'axios';
+import Pusher from 'pusher-js'
 const matchesPath = "http://127.0.0.1:5000/getMatches";
 export default {
   name: 'Manager',
@@ -49,53 +56,65 @@ export default {
   },
   data(){
     return{
-      matches:[]
-      /*
-      matches: [
-        {
-          id:1,
-          homeTeam:"Zamalek",
-          awayTeam:"Pyramids",
-          stadium:"M7la Stadium",
-          referee:"Hossam Hassan",
-          lineman1:"Ahmed Huessenaen",
-          lineman2:"Abelkader Hamad",
-          date: "2021-02-04",
-          time:"00:59:00"
-        },
-        {
-          id:2,
-          homeTeam:"Ismaili FC",
-          awayTeam:"M7la",
-          stadium:"Ismaili Stadium",
-          referee:"Hossam Hassan",
-          lineman1:"Ahmed Huessenaen",
-          lineman2:"Abelkader Hamad",
-          date: "2021-01-30",
-          time:"00:59:00"
-        }
-      ]*/
+      matches:[],
+      start:0,
+      end:3,
+      disablePrev:true,
+      disableNext:false
+      
     }
+  },
+  created () {
+    this.subscribe()
   },
   methods:{
     getMatches(){
       axios.get(matchesPath,{})
-      .then(res => this.matches = res.data)
+      .then(res => {
+        this.matches = res.data
+        this.disableButtons();
+      })
       .catch(err => console.log(err))
     },
     refreshMatches(){
       this.getMatches()
+    },
+    advance(){
+      this.start += 3
+      this.end += 3
+      this.disableButtons()
+    },
+    retreat(){
+      this.start -= 3
+      this.end -= 3
+      this.disableButtons()
+    },
+    disableButtons(){
+      this.disablePrev = false;
+      this.disableNext = false;
+      if(this.end > this.matches.length){
+        this.disableNext = true;
+      }
+      if(this.start === 0){
+        this.disablePrev = true;
+      }
+    },
+    subscribe () {
+      let pusher = new Pusher('53327a58e47a84312542', { cluster: 'eu' })
+      pusher.subscribe('matches')
+      pusher.bind('match-added', data => {
+        console.log(data);
+        this.getMatches()
+        })
+      pusher.bind('match-edited', data => {
+        console.log(data);
+        this.getMatches()
+        })
     }
   },
   beforeMount(){
     this.getMatches()
-  },
-        mounted(){
-        //catch the global event of stadium added 
-        this.$root.$on('new-match',()  =>{
-          this.getMatches()
-        })
-      }
+  }
 }
 </script>
 
