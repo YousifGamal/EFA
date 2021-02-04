@@ -24,7 +24,7 @@
               <b-row class="myRow">
                 <b-col cols="12">
                   <div v-bind:key="match.id" v-for="match in matches">
-                  <MatchCard v-on:matchedited="refreshMatches" v-bind:match="match"/>
+                  <MatchCard v-bind:type="true" v-on:matchedited="refreshMatches" v-bind:match="match"/>
                   </div>
                 </b-col>
               </b-row>

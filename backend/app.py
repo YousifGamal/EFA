@@ -143,6 +143,7 @@ def getMatches():
         dec["refName"] = match[12]
         dec["lName1"] = match[13]
         dec["lName2"] = match[14]
+        dec["show"] = False
         matches.append(dec)
     #print(matches)
     

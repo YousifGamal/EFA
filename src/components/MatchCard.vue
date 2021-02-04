@@ -14,7 +14,7 @@
         <b-button v-show="type" size="lg" @click.prevent="toggleStadium()" variant="outline-dark">Seats Details</b-button>
     </b-card>
     <CreateMatch v-if="editMatch"  v-on:matchedited="closeCreateMatchCard" 
-    v-bind:match="match" v-bind:matchId="match.id" ></CreateMatch>
+    v-bind:match="match"  v-bind:matchId="match.id" ></CreateMatch>
     <ViewStadiumSeats  v-if="showStadium" v-bind:matchId="match.id"></ViewStadiumSeats>
   </div>
 </template>
