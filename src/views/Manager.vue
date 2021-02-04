@@ -1,5 +1,5 @@
 <template>
-    <b-container fluid style="padding-left:0;padding-right:0">
+    <b-container fluid style="padding-left:0;padding-right:0;">
       <b-navbar toggleable="lg" type="dark" variant="dark" >
         <b-navbar-brand href="/">Home</b-navbar-brand>
 
@@ -136,5 +136,9 @@ export default {
 <style scoped>
 .myRow{
     padding-top: 20px;
+}
+.row{
+  margin-left: 0;
+  margin-right: 0;
 }
 </style>
