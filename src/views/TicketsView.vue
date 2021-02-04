@@ -5,7 +5,6 @@
     Search for ticket : 
     <input type="text" name="search" v-model="searchInput" placeholder="search for user..." @keyup="searchUser" />-->
     <div class="container">
-      <font-awesome-icon :icon="['fas', 'fa-trash-alt']" />
       <b-card border-variant="success" text-variant="black" header="My Tickets">
         <ticketList v-bind:ticketsList="tickets" v-on:del-ticket="deleteTicket"/>
       </b-card>
