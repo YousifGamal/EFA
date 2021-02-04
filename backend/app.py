@@ -3,20 +3,13 @@ from flask_cors import CORS, cross_origin
 #from models import User, Course, Student, StaffMember, Semester, Requirement
 from query_factory import QueryFactory
 from datetime import datetime
-<<<<<<< HEAD
-import time,hashlib
-=======
 from pusher import Pusher
->>>>>>> origin/main
 
 app = Flask(__name__)
 app.secret_key = "abcd"
 CORS(app, support_credentials=True)
 query_factory = QueryFactory()
 query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="jimmy")
-<<<<<<< HEAD
-cookies = []
-=======
 
     # configure pusher object
 pusher = Pusher(
@@ -26,7 +19,6 @@ pusher = Pusher(
       cluster='eu',
       ssl=True
     )
->>>>>>> origin/main
 
 @app.route('/AddStadium',methods=['POST'])
 def addStadium():
