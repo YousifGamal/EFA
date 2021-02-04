@@ -6,17 +6,17 @@
     <div class="row">
       <div class="col">
         <label>Card Number  </label>
-        <input name ='text1' type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter card number" >
+        <input v-model="form.cardNumber" type="number" class="form-control" placeholder="Enter card number" >
       </div>
       <div class=rq v-show="wrongCardNumber">Please input the card number.</div>
       <br>
       <div class="col">
         <label>Card Pin </label>
-        <input name ='text2' type="number" class="form-control" id="exampleInputPassword1" placeholder="Pin">
+        <input v-model="form.cardPin" type="number" class="form-control" id="exampleInputPassword1" placeholder="Pin">
       </div>
       <div class=rq v-show="wrongCardPin">Please input the card pin.</div>
-      <br>
     </div>
+      <br>
       <button type="button" @click="required()" class="info">
         Buy Tickets
       </button>
@@ -47,6 +47,10 @@
     props:['matchId','userId'],
     data() {
       return {
+        form: {
+            cardNumber:'',
+            cardPin:''
+        },
         isSubmit: false,
         wrongCardNumber: false,
         wrongCardPin: false,
@@ -58,7 +62,6 @@
         isReserved: [],
         reservedSeatsBeforehead: [],
         alreadyReservedSeats:[],
-        alreadyReservedSeats2:[],
         isPaid: false
       }
     },
@@ -68,8 +71,8 @@
     },
     methods: {
       required: function(){
-          var empt = document.forms["form1"]["text1"].value;
-          var empt2 = document.forms["form1"]["text2"].value;
+          var empt = this.form.cardNumber;
+          var empt2 = this.form.cardPin;
           if (empt == ""){
             this.wrongCardNumber = true;
             return;
@@ -166,7 +169,6 @@
       }
     },
     beforeMount(){
-      console.log(this.matchId);
       axios.get(seatsPath,{params:{match_id: this.matchId}})
       .then(res => {this.rows =  res.data[0][0]; 
           this.cols = res.data[0][1];
