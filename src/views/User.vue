@@ -1,10 +1,8 @@
 <template>
     <b-container fluid style="padding-left:0;padding-right:0">
       <b-navbar toggleable="lg" type="dark" variant="dark">
-          <b-navbar-brand href="/">Home</b-navbar-brand>
+          <b-navbar-brand href="/user">Home</b-navbar-brand>
           <b-navbar-brand href="/manager">My Tickets</b-navbar-brand>
-          
-
 
           <b-collapse id="nav-collapse" is-nav>
 

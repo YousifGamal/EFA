@@ -1,7 +1,7 @@
 <template>
     <b-container fluid style="padding-left:0;padding-right:0">
       <b-navbar toggleable="lg" type="dark" variant="dark" >
-        <b-navbar-brand href="/">Home</b-navbar-brand>
+        <b-navbar-brand href="/manager">Home</b-navbar-brand>
 
 
 
