@@ -1,5 +1,20 @@
 <template>
     <b-container fluid >
+      <b-navbar toggleable="lg" type="dark" variant="dark">
+          <b-navbar-brand href="/">Home</b-navbar-brand>
+          <b-navbar-brand href="/manager">Manager</b-navbar-brand>
+          <b-navbar-brand href="/user">User</b-navbar-brand>
+
+
+          <b-collapse id="nav-collapse" is-nav>
+
+            <b-navbar-nav class="ml-auto" >
+
+              <b-navbar-brand href="/update">Profile</b-navbar-brand>
+              <b-navbar-brand href="/login">Logout</b-navbar-brand>
+            </b-navbar-nav>
+          </b-collapse>
+      </b-navbar>
         <b-row>
             <b-col cols="2"></b-col>
             <b-col cols="8">
