@@ -1,15 +1,14 @@
 <template>
-    <b-container fluid >
+    <b-container fluid style="padding-left:0;padding-right:0;">
       <b-navbar toggleable="lg" type="dark" variant="dark" >
-        <b-navbar-brand href="/">Home</b-navbar-brand>
-        <b-navbar-brand href="/manager">Manager</b-navbar-brand>
-        <b-navbar-brand href="/user">User</b-navbar-brand>
+        <b-navbar-brand href="/manager">Home</b-navbar-brand>
+
 
 
         <b-collapse id="nav-collapse" is-nav>
 
           <b-navbar-nav class="ml-auto" >
-
+                
             <b-navbar-brand href="/update">Profile</b-navbar-brand>
             <b-navbar-brand href="/login">Logout</b-navbar-brand>
           </b-navbar-nav>
@@ -39,7 +38,7 @@
               <b-row class="myRow">
                 <b-col cols="12">
                   <div  v-bind:key="match.id" v-for="match in matches.slice(start,end)">
-                  <MatchCard v-bind:type="true" v-on:matchedited="refreshMatches" v-bind:match="match"/>
+                  <MatchCard v-bind:type="0" v-on:matchedited="refreshMatches" v-bind:match="match"/>
                   </div>
                 </b-col>
               </b-row>
@@ -137,5 +136,9 @@ export default {
 <style scoped>
 .myRow{
     padding-top: 20px;
+}
+.row{
+  margin-left: 0;
+  margin-right: 0;
 }
 </style>

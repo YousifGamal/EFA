@@ -9,11 +9,17 @@ import Pending from '../views/PendingView.vue'
 import Tickets from '../views/TicketsView.vue'
 import Console from '../views/ConsoleView.vue'
 import User from '../views/User.vue'
+import Guest from '../views/Guest.vue'
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path:'/',
+    name:'Login',
+    component:Login
+  },
+  {
+    path: '/home',
     name: 'Home',
     component: Home
   },
@@ -66,6 +72,11 @@ const routes = [
     path:'/user',
     name:'user',
     component: User
+  },
+  {
+    path:'/guest',
+    name:'guest',
+    component: Guest
   }
 ]
 
