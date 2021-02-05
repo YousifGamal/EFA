@@ -148,7 +148,7 @@
                   <label for="date" class="label">Birth Date</label
                   ><b-form-datepicker
                     id="date-id"
-                    v-model="register_data.birth_day"
+                    v-model="register_data.birth_date"
                     locale="en"
                     required
                   ></b-form-datepicker>
@@ -213,6 +213,9 @@
 
 <script>
 import $ from "jquery"; // import jquery
+import axios from "axios";
+const login = "http://127.0.0.1:5000/login";
+const register = "http://127.0.0.1:5000/createUser";
 
 export default {
   name: "Login",
@@ -230,7 +233,7 @@ export default {
         email: "",
         pass1: "",
         pass2: "",
-        birth_day: "2020-01-01",
+        birth_date: "2020-01-01",
       },
       //   type: 'password',
       //   btnText: 'Show Password'
@@ -245,9 +248,46 @@ export default {
       if (!myForm[0].checkValidity()) {
         console.log(myForm[0].checkValidity());
         myForm[0].reportValidity();
+      } else {
+        console.log(this.login_data);
+        axios
+          .post(login, this.login_data)
+          .then((res) => {
+            console.log(res.data.user);
+            if (res.data.user[0] === "Fan") {
+              this.$router.push({ name: "Home" });
+            }
+            else if (res.data.user[0] === "Admin")
+            {
+                this.$router.push({ name: "About" });
+            }
+             else {
+              if (res.data.user[1] === 0) {
+                // not pending
+                this.$router.push({ name: "Manager" });
+              } else {
+                this.$notify({
+                  group: "login",
+                  type: "warn",
+                  title: "Account Activation",
+                  text:
+                    "Your account needs to be verified first then you can login ...",
+                  duration: 3000,
+                });
+              }
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            this.$notify({
+              group: "login",
+              type: "warn",
+              title: "Username or Password is incorrect.",
+              text: "Try again..",
+              duration: 3000,
+            });
+          });
       }
-
-      console.log(this.login_data);
 
       // todo send request to back to authenticate credentials and if user exist redirect to fan / manger / admin page
     },
@@ -263,27 +303,50 @@ export default {
         console.log(myForm[0].checkValidity());
         myForm[0].reportValidity();
       } else {
-        if(this.register_data.pass1 != this.register_data.pass2)
-        {
+        if (this.register_data.pass1 != this.register_data.pass2) {
           this.$notify({
-          group: "login",
-          type: "warn",
-          title: "Passwords doesnot match",
-          text: "",
-          duration: 3000,
-        });
+            group: "login",
+            type: "warn",
+            title: "Passwords doesnot match",
+            text: "",
+            duration: 3000,
+          });
+        } else {
+          // request to create user if username is availabe
+          axios
+            .post(register, this.register_data)
+            .then((res) => {
+              console.log(res);
+              if (this.register_data.role === "Fan") {
+                this.$router.push({ name: "About" });
+              } else {
+                // manger handle it to first approve than enter
+                {
+                  this.$notify({
+                    group: "login",
+                    type: "warn",
+                    title: "Account Activation",
+                    text:
+                      "Your account needs to be verified first then you can login ...",
+                    duration: 3000,
+                  });
+                }
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              this.$notify({
+                group: "login",
+                type: "warn",
+                title:
+                  "Username " +
+                  this.register_data.username +
+                  " is not available.",
+                text: "Try using another username",
+                duration: 3000,
+              });
+            });
         }
-        else{
-           // request to create user if username is availabe
-        this.$notify({
-          group: "login",
-          type: "warn",
-          title: "Username " + this.register_data.username +" is not available.",
-          text: "Try using another username",
-          duration: 3000,
-        });
-        }
-       
       }
     },
     // showPassword() {

@@ -79,14 +79,14 @@
       </b-form-group>
 
 
-      <b-form-group  label="Password" label-for="password">
+      <!-- <b-form-group  label="Password" label-for="password">
         <b-form-input
           v-model="form.password"
           type="password"
           placeholder="Enter new password"
           required
         ></b-form-input>
-      </b-form-group>
+      </b-form-group> -->
 
       <b-form-group label="Gender:" label-for="gender">
         <b-form-select
@@ -115,20 +115,23 @@
 </template>
 
 <script>
+  import axios from 'axios';
+  const profilePath = "http://127.0.0.1:5000/profile";
+  const updatePath = "http://127.0.0.1:5000/profileUpdate";
   export default {
     data() {
       return {
         form: {
-          username:'Gellesh',
-          email: 'sssss@ssssss.com',
-          first_name: 'khaled',
-          last_name:'galal',
-          gender:'Male',
-          role:'Fan',
-          password:'kkkk',
-          city:'Giza',
+          username:'',
+          email: '',
+          first_name: '',
+          last_name:'',
+          gender:'',
+          role:'',
+          // password:'',
+          city:'',
           address:'',
-          birth_date:'2020-01-01'
+          birth_date:''
           
         },
         
@@ -137,10 +140,15 @@
         show: true
       }
     },
+
     methods: {
       onSubmit(event) {
         event.preventDefault()
         // update current userprofile
+      axios.put(updatePath,this.form).then(res => {
+        console.log(res);
+
+      })
       },
       onReset(event) {
         event.preventDefault()
@@ -149,13 +157,19 @@
         this.form.first_name = ''
         this.form.last_name = ''
         this.form.gender=''
-        this.form.birth_date=''
+        // this.form.birth_date=''
         // Trick to reset/clear native browser form validation state
         this.show = false
         this.$nextTick(() => {
           this.show = true
         })
       }
+    },
+      beforeMount(){
+      axios.get(profilePath,{params:{username: "onetwo"}}) 
+      .then(res => {
+        this.form = res.data.user
+      }).catch(err => console.log(err))
     }
   }
 </script>
