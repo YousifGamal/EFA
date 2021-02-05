@@ -131,15 +131,15 @@ ALTER TABLE efa.teams OWNER TO postgres;
 CREATE TABLE efa."user" (
     user_id  SERIAL,
     user_name varchar(50) NOT NULL,
-    password varchar(50) NOT NULL,
+    password text NOT NULL,
     first_name varchar(50) NOT NULL,
     last_name varchar(50) NOT NULL,
     birth_date date NOT NULL,
-    gender "char" NOT NULL,
+    gender varchar(7) NOT NULL,
     city varchar(50) NOT NULL,
     address text,
     email varchar(50) NOT NULL,
-    role "char" NOT NULL,
+    role varchar(10) NOT NULL,
     status integer NOT NULL
 );
 

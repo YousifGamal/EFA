@@ -2,6 +2,9 @@ from database_manager import DatabaseManager
 #from models import User, Course, Student, StaffMember, Semester, Requirement
 from typing import Optional
 from psycopg2 import IntegrityError
+from crypto import *
+import hashlib
+
 class QueryFactory:
     def __init__(self):
         self.db_manager = DatabaseManager()
@@ -136,4 +139,55 @@ class QueryFactory:
         query:str = "select count(*) from efa.reservation "\
                     f"where match_id= {matchId}"
         response = self.db_manager.execute_query(query)
+        return response
+
+    def checkUsername(self,username):
+        query:str = "SELECT count(*) FROM efa.user where user_name = '{}';".format(username)
+        response = self.db_manager.execute_query(query)
+        exist = response[0][0]
+        return True if exist > 0 else False
+
+    def getUser(self,username):
+        query:str = "SELECT * FROM efa.user where user_name = '{}';".format(username)
+        response = self.db_manager.execute_query(query)[0]
+        return response
+
+    def getPass(self,username):
+        query:str = "SELECT password FROM efa.user where user_name = '{}';".format(username)
+        response = self.db_manager.execute_query(query)[0]
+        return response[0]
+
+
+    def updatePass(self,username,password):
+        query:str = "UPDATE efa.user SET password = '{}' where user_name = '{}';".format(password,username)
+        response = self.db_manager.execute_query_no_return(query)
+        return response
+
+    def authenticate(self,data):
+        query:str = "SELECT role , status FROM efa.user where user_name = '{}' and password = '{}';".format(data['login_username'],hashlib.sha256(data['login_pass'].encode()).hexdigest())
+        response = self.db_manager.execute_query(query)
+        if len(response) == 0:
+            return False
+
+        exist = response[0]
+        # return True if exist > 0 else False
+        return exist
+
+
+    def addUser(self,data):
+        query:str = "INSERT INTO efa.user(user_name, password, first_name, last_name, birth_date, gender, city, address, email, role, status) \
+                     VALUES ( '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', {});".format(
+                         data['username'],hashlib.sha256(data['pass1'].encode()).hexdigest() ,data['first_name'],data['last_name'],data['birth_date'],data['gender'],data['city']
+                         ,data['address'],data['email'],data['role'],0)
+        response = self.db_manager.execute_query_no_return(query)
+        return response
+
+    def updateUser(self,data):
+        query:str = "UPDATE efa.user\
+	                SET  first_name='{}', last_name='{}', birth_date='{}',\
+                    gender='{}', city='{}', address='{}', role='{}', status= 0 WHERE user_name = '{}';".format(
+                    data['first_name'],data['last_name'],data['birth_date'],data['gender'],data['city'],
+                    data['address'],data['role'],data['username'])
+
+        response = self.db_manager.execute_query_no_return(query)
         return response
