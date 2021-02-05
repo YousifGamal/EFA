@@ -36,4 +36,4 @@ def decrypt_message(encrypted_message):
 
     return decrypt_message
 
-print(hashlib.sha256('1234'.encode()).hexdigest())
+# print(hashlib.sha256('1234'.encode()).hexdigest())
