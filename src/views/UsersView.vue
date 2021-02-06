@@ -22,7 +22,9 @@ export default {
   },
   methods:{
     deleteUser(id){
-      axios.get("http://localhost:5000/deleteuser/"+id)
+      axios.get("http://localhost:5000/deleteuser/"+id,{
+        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+      })
     .then()
     .catch(err => console.log(err))
     this.users = this.users.filter(user => user[0] !== id);
@@ -30,18 +32,24 @@ export default {
     searchUser(){
       if(this.searchInput !== "")
       {
-        axios.get("http://localhost:5000/searchforuser/"+this.searchInput)
-        .then(res => this.users = res.data)
-        .catch(err => console.log(err));
+        axios.get("http://localhost:5000/searchforuser/"+this.searchInput,{
+        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+      })
+      .then(res => this.users = res.data)
+      .catch(err => console.log(err));
       }else{
-        axios.get("http://localhost:5000/showallusers/")
+        axios.get("http://localhost:5000/showallusers/",{
+        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+      })
         .then(res => this.users = res.data)
         .catch(err => console.log(err))
       }
     }
   },
   created(){
-    axios.get("http://localhost:5000/showallusers/")
+    axios.get("http://localhost:5000/showallusers/",{
+        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+      })
     .then(res => this.users = res.data)
     .catch(err => console.log(err))
   }

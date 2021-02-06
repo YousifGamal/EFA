@@ -22,7 +22,9 @@ export default {
   },
   methods:{
     deleteUser(id){
-      axios.get("http://localhost:5000/deleteuser/"+id)
+      axios.get("http://localhost:5000/deleteuser/"+id,{
+        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+      })
     .then()
     .catch(err => console.log(err))
     this.users = this.users.filter(user => user[0] !== id);
@@ -30,24 +32,32 @@ export default {
     searchPending(){
       if(this.searchInput !== "")
       {
-        axios.get("http://localhost:5000/searchforpending/"+this.searchInput)
+        axios.get("http://localhost:5000/searchforpending/"+this.searchInput,{
+        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+      })
         .then(res => this.users = res.data)
         .catch(err => console.log(err));
       }else{
-        axios.get("http://localhost:5000/showpendingusers/")
+        axios.get("http://localhost:5000/showpendingusers/",{
+        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+      })
         .then(res => this.users = res.data)
         .catch(err => console.log(err))
       }
     },
     approveUser(id){
-      axios.get("http://localhost:5000/approvepending/"+id)
+      axios.get("http://localhost:5000/approvepending/"+id,{
+        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+      })
       .then()
       .catch(err => console.log(err))
       this.users = this.users.filter(user => user[0] !== id);
     }
   },
   created(){
-    axios.get("http://localhost:5000/showpendingusers/")
+    axios.get("http://localhost:5000/showpendingusers/",{
+        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+      })
     .then(res => this.users = res.data)
     .catch(err => console.log(err))
   }
