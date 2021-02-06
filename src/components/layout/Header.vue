@@ -2,7 +2,7 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
       <b-navbar-brand href="#">Console Page</b-navbar-brand>
-      <b-navbar-brand class="ml-auto">Logout</b-navbar-brand>
+      <b-navbar-brand href="/login" @click="Logout" class="ml-auto">Logout</b-navbar-brand>
     </b-navbar>
     
   </div>

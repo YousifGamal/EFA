@@ -4,7 +4,7 @@
     <!--<input type="checkbox" v-on:click="markUser" />-->
     <b-card  border-variant="success" header="Ticket" text-variant="black">
       <b-card-title>
-        <b-badge>{{ticket[1]}}</b-badge>  vs  <b-badge>{{ticket[2]}}  </b-badge>
+        <img src="ticketIcon.png"/> <b-badge>{{ticket[1]}}</b-badge>  vs  <b-badge>{{ticket[2]}}  </b-badge>
         <button @click="$emit('del-ticket', ticket[0],ticket[3])" class="del" style="float:right;" title="delete ticket">&#10062;</button>
       </b-card-title>
       <b-card-sub-title sub-title-text-variant = "black" sub-title-tag="h5">

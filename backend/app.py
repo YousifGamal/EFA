@@ -11,8 +11,6 @@ from datetime import datetime, timedelta
 from functools import wraps 
 
 app = Flask(__name__)
-app.config['JWT_SECRET_KEY'] = "3'erha ya gelsh :D"  # Change this!
-jwt = JWTManager(app)
 CORS(app, support_credentials=True)
 query_factory = QueryFactory()
 query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="jimmy")

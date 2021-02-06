@@ -54,7 +54,7 @@ export default {
     pusher.subscribe('seats')
     pusher.bind('seat-reserved', data => {
       console.log(data);
-      axios.get("http://localhost:5000/showusertickets/"+1) // lazem tt3dl
+      axios.get("http://localhost:5000/showusertickets/"+(window.localStorage.getItem("id"))) // lazem tt3dl
       .then(res => this.tickets = res.data)
       .catch(err => console.log(err))  
     })
@@ -62,7 +62,7 @@ export default {
   },
   beforeMount(){
     
-    axios.get("http://localhost:5000/showusertickets/"+1) // lazem tt3dl
+    axios.get("http://localhost:5000/showusertickets/"+(window.localStorage.getItem("id"))) // lazem tt3dl
     .then(res => this.tickets = res.data)
     .catch(err => console.log(err))
   },created(){
