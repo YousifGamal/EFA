@@ -14,14 +14,14 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path:'/',
+    path:'/login',
     name:'Login',
     component:Login
   },
   {
-    path: '/home',
+    path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
   },
   {
     path: '/about',
@@ -79,5 +79,25 @@ const routes = [
 const router = new VueRouter({
   routes,mode: 'history'
 })
+
+
+router.beforeEach((to, from, next) => {
+  var isAuthenticated ;
+  const token = window.localStorage.getItem('token');
+  // console.log(token);
+  if(token === null)
+  {
+    isAuthenticated = false
+  }
+  else{
+    isAuthenticated = true
+  }
+  // console.log(to.name);
+  
+  if (to.name !== 'Login' && !isAuthenticated && to.name !== 'guest' ) next({ name: 'Login' })
+  else next(true)
+})
+
+
 
 export default router

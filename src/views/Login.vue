@@ -253,17 +253,24 @@ export default {
         axios
           .post(login, this.login_data)
           .then((res) => {
-            console.log(res.data.user);
-            if (res.data.user[0] === "Fan") {
-              this.$router.push({ name: "Home" });
-            }
-            else if (res.data.user[0] === "Admin")
-            {
-                this.$router.push({ name: "About" });
-            }
-             else {
-              if (res.data.user[1] === 0) {
+            window.localStorage.setItem(
+              "username",
+              this.login_data.login_username
+            );
+
+            window.localStorage.setItem("role", res.data.role);
+            window.localStorage.setItem("id", res.data.id);
+
+            if (res.data.role === "Fan") {
+              window.localStorage.setItem("token", res.data.token);
+              this.$router.push({ name: "user" });
+            } else if (res.data.role === "Admin") {
+              window.localStorage.setItem("token", res.data.token);
+              this.$router.push({ name: "Console" });
+            } else {
+              if (res.data.status === 0) {
                 // not pending
+                window.localStorage.setItem("token", res.data.token);
                 this.$router.push({ name: "Manager" });
               } else {
                 this.$notify({
@@ -318,7 +325,17 @@ export default {
             .then((res) => {
               console.log(res);
               if (this.register_data.role === "Fan") {
-                this.$router.push({ name: "About" });
+                window.localStorage.setItem(
+                  "username",
+                  this.register_data.username
+                );
+                this.$notify({
+                  group: "login",
+                  type: "success",
+                  title: "Account Created..",
+                  text: "Use your credentials to login in ...",
+                  duration: 3000,
+                });
               } else {
                 // manger handle it to first approve than enter
                 {

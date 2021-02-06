@@ -1,15 +1,49 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify,make_response
 from flask_cors import CORS, cross_origin
 #from models import User, Course, Student, StaffMember, Semester, Requirement
 from query_factory import QueryFactory
 from datetime import datetime
 from pusher import Pusher
-from crypto import *
+
+# imports for PyJWT authentication 
+import jwt 
+from datetime import datetime, timedelta 
+from functools import wraps 
 
 app = Flask(__name__)
 CORS(app, support_credentials=True)
 query_factory = QueryFactory()
 query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="pass123")
+
+app.config['SECRET_KEY'] = 'el secret key aho'
+
+
+# decorator for verifying the JWT 
+def token_required(f): 
+    @wraps(f) 
+    def decorated(*args, **kwargs): 
+        token = None
+        # jwt is passed in the request header 
+        if 'x-access-token' in request.headers: 
+            token = request.headers['x-access-token'] 
+        # return 401 if token is not passed 
+        if not token: 
+            return jsonify({'message' : 'Token is missing !!'}), 401
+   
+        try: 
+            # decoding the payload to fetch the stored details 
+            data = jwt.decode(token, app.config['SECRET_KEY']) 
+            # current_user = User.query\ 
+            #     .filter_by(public_id = data['public_id'])\ 
+            #     .first() 
+        except: 
+            return jsonify({ 
+                'message' : 'Token is invalid !!'
+            }), 401
+        # returns the current logged in users contex to the routes 
+        return  f(*args, **kwargs) 
+   
+    return decorated 
 
 
     # configure pusher object
@@ -252,6 +286,7 @@ def deleteUserTicket(ticketId):
     pusher.trigger('seats', 'seat-reserved', data)
     return response
 
+
 @app.route('/createUser',methods=['POST'])
 def createUser():
     data = request.get_json()
@@ -272,12 +307,25 @@ def login():
     print(data)
     response = query_factory.authenticate(data)
     if response:
-        return jsonify({'user': response}), 200
+        token = jwt.encode({ 
+            'username': response[0],
+            'role': response[1], 
+            'exp' : datetime.utcnow() + timedelta(minutes = 30) 
+        }, app.config['SECRET_KEY']) 
+   
+        return make_response(jsonify({'token' : token.decode('UTF-8'),'role':response[0],'status':response[1] , 'id':response[2]}), 201) 
+        # return jsonify({'user': response}), 200
     else:
-        return jsonify({'error': 'user credentials is not right'}), 400
+        return make_response( 
+            'Could not verify', 
+            403, 
+            {'WWW-Authenticate' : 'Basic realm ="User credentials is not right !!"'} 
+        ) 
+        # return jsonify({'error': 'user credentials is not right'}), 400
 
 
 @app.route('/profile',methods=['GET'])
+@token_required
 def getProfile():
     username = request.args.get("username")
     # print(username)
@@ -298,32 +346,28 @@ def getProfile():
 
     
 @app.route('/profileUpdate',methods=['PUT'])
+@token_required
 def updateProfile():
     data = request.get_json()
-    print(data)
+    print(data ," incoming payload")
     response = query_factory.updateUser(data)
 
     return jsonify({'update': "successed"}), 200
 
+@app.route('/passUpdate',methods=['PUT'])
+@token_required
+def updatePass():
+    data = request.get_json()
+    # check if the password is correct 
+    userPass = query_factory.getPass(data['username'])
+    oldPass  = hashlib.sha256(data['password'].encode()).hexdigest()
+
+    if userPass == oldPass:
+        response = query_factory.updatePass(data)
+        return jsonify({'update': "successed"}), 200
+    else:
+        return jsonify({'update': "failed"}), 200
 
 
-# @app.route('/test',methods=['get'])
-# def test():
 
-#     username = "onetwo"
-#     newpass = "123"
-
-#     # stringhashed = encrypt_message(newpass)
-#     # stringhashed = stringhashed.decode('utf-8')
-#     # print(stringhashed,type(stringhashed))
-#     # query_factory.updatePass(stringhashed,username)
-
-#     text = query_factory.getPass(username)
-#     print(text,type(text))
-#     my_str_as_bytes =  text.encode('utf-8')
-#     print(my_str_as_bytes,type(my_str_as_bytes))
-    
-#     print(decrypt_message(my_str_as_bytes))
-
-#     return jsonify({'update': "successed"}), 200
 

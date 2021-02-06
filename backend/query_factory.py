@@ -2,7 +2,6 @@ from database_manager import DatabaseManager
 #from models import User, Course, Student, StaffMember, Semester, Requirement
 from typing import Optional
 from psycopg2 import IntegrityError
-from crypto import *
 import hashlib
 
 class QueryFactory:
@@ -223,13 +222,14 @@ class QueryFactory:
         return response[0]
 
 
-    def updatePass(self,username,password):
-        query:str = "UPDATE efa.user SET password = '{}' where user_name = '{}';".format(password,username)
+    def updatePass(self,data):
+        newpass = hashlib.sha256(data['newPassword'].encode()).hexdigest()
+        query:str = "UPDATE efa.user SET password = '{}' where user_name = '{}';".format(newpass,data['username'])
         response = self.db_manager.execute_query_no_return(query)
         return response
 
     def authenticate(self,data):
-        query:str = "SELECT role , status FROM efa.user where user_name = '{}' and password = '{}';".format(data['login_username'],hashlib.sha256(data['login_pass'].encode()).hexdigest())
+        query:str = "SELECT role , status , user_id FROM efa.user where user_name = '{}' and password = '{}';".format(data['login_username'],hashlib.sha256(data['login_pass'].encode()).hexdigest())
         response = self.db_manager.execute_query(query)
         if len(response) == 0:
             return False
@@ -250,9 +250,9 @@ class QueryFactory:
     def updateUser(self,data):
         query:str = "UPDATE efa.user\
 	                SET  first_name='{}', last_name='{}', birth_date='{}',\
-                    gender='{}', city='{}', address='{}', role='{}', status= 0 WHERE user_name = '{}';".format(
+                    gender='{}', city='{}', address='{}', role='{}', status = '{}' WHERE user_name = '{}';".format(
                     data['first_name'],data['last_name'],data['birth_date'],data['gender'],data['city'],
-                    data['address'],data['role'],data['username'])
+                    data['address'],data['role'],data['status'],data['username'])
 
         response = self.db_manager.execute_query_no_return(query)
         return response
