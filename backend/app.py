@@ -4,11 +4,13 @@ from flask_cors import CORS, cross_origin
 from query_factory import QueryFactory
 from datetime import datetime
 from pusher import Pusher
+from crypto import *
 
 app = Flask(__name__)
 CORS(app, support_credentials=True)
 query_factory = QueryFactory()
-query_factory.initialize_connection(db_name="postgres", db_user="postgres", db_password="jimmy")
+query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="pass123")
+
 
     # configure pusher object
 pusher = Pusher(
@@ -178,6 +180,7 @@ def numberOfReserSeats():
     response = query_factory.numberOfRecvSeasts(mId)
     return jsonify(response[0][0])
 
+<<<<<<< HEAD
 '''
     show/delete users functions
 '''
@@ -249,3 +252,81 @@ def deleteUserTicket(ticketId):
     data="yaraaab"
     pusher.trigger('seats', 'seat-reserved', data)
     return response
+=======
+
+@app.route('/createUser',methods=['POST'])
+def createUser():
+    data = request.get_json()
+    print(data)
+    response = query_factory.checkUsername(data["username"])
+    if response:
+        return jsonify({'errors': 'username already exists'}), 400
+    else:
+        response = query_factory.addUser(data)
+        print(response)
+        return jsonify({'msg': 'user created successfully'}), 200
+
+
+
+@app.route('/login',methods=['POST'])
+def login():
+    data = request.get_json()
+    print(data)
+    response = query_factory.authenticate(data)
+    if response:
+        return jsonify({'user': response}), 200
+    else:
+        return jsonify({'error': 'user credentials is not right'}), 400
+
+
+@app.route('/profile',methods=['GET'])
+def getProfile():
+    username = request.args.get("username")
+    # print(username)
+    data = query_factory.getUser(username)
+    # print(data)
+    response = {"username":data[1],
+          "email": data[9],
+          "first_name": data[3],
+          "last_name":data[4],
+          "gender":data[6],
+          "role":data[10],
+          "password":"",
+          "city":data[7],
+          "address":data[8],
+          "birth_date":data[5].strftime('%Y-%m-%d')}
+
+    return jsonify({'user': response}), 200
+
+    
+@app.route('/profileUpdate',methods=['PUT'])
+def updateProfile():
+    data = request.get_json()
+    print(data)
+    response = query_factory.updateUser(data)
+
+    return jsonify({'update': "successed"}), 200
+
+
+
+# @app.route('/test',methods=['get'])
+# def test():
+
+#     username = "onetwo"
+#     newpass = "123"
+
+#     # stringhashed = encrypt_message(newpass)
+#     # stringhashed = stringhashed.decode('utf-8')
+#     # print(stringhashed,type(stringhashed))
+#     # query_factory.updatePass(stringhashed,username)
+
+#     text = query_factory.getPass(username)
+#     print(text,type(text))
+#     my_str_as_bytes =  text.encode('utf-8')
+#     print(my_str_as_bytes,type(my_str_as_bytes))
+    
+#     print(decrypt_message(my_str_as_bytes))
+
+#     return jsonify({'update': "successed"}), 200
+
+>>>>>>> origin/main
