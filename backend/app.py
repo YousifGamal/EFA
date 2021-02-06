@@ -5,11 +5,17 @@ from query_factory import QueryFactory
 from datetime import datetime
 from pusher import Pusher
 from crypto import *
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 
 app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = "3'erha ya gelsh :D"  # Change this!
+jwt = JWTManager(app)
 CORS(app, support_credentials=True)
 query_factory = QueryFactory()
-query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="pass123")
+query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="jimmy")
 
 
     # configure pusher object
@@ -180,7 +186,6 @@ def numberOfReserSeats():
     response = query_factory.numberOfRecvSeasts(mId)
     return jsonify(response[0][0])
 
-<<<<<<< HEAD
 '''
     show/delete users functions
 '''
@@ -252,7 +257,6 @@ def deleteUserTicket(ticketId):
     data="yaraaab"
     pusher.trigger('seats', 'seat-reserved', data)
     return response
-=======
 
 @app.route('/createUser',methods=['POST'])
 def createUser():
@@ -274,6 +278,7 @@ def login():
     print(data)
     response = query_factory.authenticate(data)
     if response:
+        print(response)
         return jsonify({'user': response}), 200
     else:
         return jsonify({'error': 'user credentials is not right'}), 400
@@ -329,4 +334,3 @@ def updateProfile():
 
 #     return jsonify({'update': "successed"}), 200
 
->>>>>>> origin/main

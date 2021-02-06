@@ -229,7 +229,8 @@ class QueryFactory:
         return response
 
     def authenticate(self,data):
-        query:str = "SELECT role , status FROM efa.user where user_name = '{}' and password = '{}';".format(data['login_username'],hashlib.sha256(data['login_pass'].encode()).hexdigest())
+        print(hashlib.sha256(data['login_pass'].encode()).hexdigest())
+        query:str = "SELECT role , status FROM efa.user where user_name Like '{}' and password = '{}';".format(data['login_username'],hashlib.sha256(data['login_pass'].encode()).hexdigest())
         response = self.db_manager.execute_query(query)
         if len(response) == 0:
             return False
