@@ -9,7 +9,7 @@
             <b-navbar-nav class="ml-auto" >
 
               <b-navbar-brand href="/update">Profile</b-navbar-brand>
-              <b-navbar-brand href="/login">Logout</b-navbar-brand>
+              <b-navbar-brand href="/login" @click="Logout()">Logout</b-navbar-brand>
             </b-navbar-nav>
           </b-collapse>
       </b-navbar>
@@ -101,7 +101,12 @@ export default {
       console.log(data);
       this.getMatches()
       })
-    }
+    },
+        Logout(){
+        console.log("Here");
+        window.localStorage.clear();
+        // this.$router.push({ name: "Login" });
+      },
     
   },
   beforeMount(){

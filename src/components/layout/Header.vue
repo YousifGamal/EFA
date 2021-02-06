@@ -13,9 +13,17 @@ export default {
   name: 'Header',
   props: {
     msg: String
+  },
+    methods:{
+        Logout(){
+        console.log("Here");
+        window.localStorage.clear();
+        this.$router.push({ name: "Login" });
+      },
   }
 }
 </script>
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
