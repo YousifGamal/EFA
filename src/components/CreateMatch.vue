@@ -175,7 +175,8 @@ export default {
         disableEditButton: false,
         seatsReservedFlag: false,
         areEqual: true,
-        sameForm: false
+        sameForm: false,
+        token: localStorage.getItem("token")
       }
     },
     created () {
@@ -197,7 +198,7 @@ export default {
             mdate: this.form.date,
             mtime: this.form.time
           }
-          axios.post(createMatchPath,payload)
+          axios.post(createMatchPath,payload,{headers: { "x-access-token": `${this.token}` },})
           .then(res => {
             if (res.data == false) {
               this.form.homeTeam = '';
@@ -260,7 +261,7 @@ export default {
             mdate: this.form.date,
             mtime: this.form.time
           }
-          axios.post(editMatchPath,payload)
+          axios.post(editMatchPath,payload,{headers: { "x-access-token": `${this.token}` },})
           .then(res => {
             //false meand error = false
             if (res.data == false) {
@@ -318,7 +319,9 @@ export default {
         pusher.subscribe('matches')
         pusher.bind('stadium-added', data => {
           console.log(data);
-          axios.get(stadiumsPath,{})
+          axios.get(stadiumsPath,{
+        headers: { "x-access-token": `${this.token}` },
+      })
           .then(res => this.stadiums =  res.data)
           .catch(err => console.log(err))
           })
@@ -343,19 +346,27 @@ export default {
         }
         //get selectors data
         //get stadiums
-        axios.get(stadiumsPath,{})
+        axios.get(stadiumsPath,{
+        headers: { "x-access-token": `${this.token}` },
+      })
         .then(res => this.stadiums =  res.data)
         .catch(err => console.log(err))
         //get teams
-        axios.get(teamsPath,{})
+        axios.get(teamsPath,{
+        headers: { "x-access-token": `${this.token}` },
+      })
         .then(res => this.teams = res.data)
         .catch(err => console.log(err))
         //get referees
-        axios.get(refereesPath,{})
+        axios.get(refereesPath,{
+        headers: { "x-access-token": `${this.token}` },
+      })
         .then(res => this.referees = res.data)
         .catch(err => console.log(err))
         //get Linemen
-        axios.get(linemenPath,{})
+        axios.get(linemenPath,{
+        headers: { "x-access-token": `${this.token}` },
+      })
         .then(res => this.linemen = res.data)
         .catch(err => console.log(err))
       }/*

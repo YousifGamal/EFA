@@ -69,7 +69,8 @@ export default {
             seatsPerRow:0
         },
         stadiums: ['Borg El Arab', 'El Salam', 'Cairo Stadium', 'Ismaili Stadium', 'M7la Stadium'],
-        stadiumAlert:false
+        stadiumAlert:false,
+        token: localStorage.getItem("token")
       }
     },
     methods: {
@@ -81,7 +82,8 @@ export default {
           rows: this.form.rows,
           seatsPerRow: this.form.seatsPerRow
         }
-        axios.post(path,payload)
+        
+        axios.post(path,payload,{headers: { "x-access-token": `${this.token}` },})
         .then(res => {
           console.log(res.data)
            if (res.data.res == true) {

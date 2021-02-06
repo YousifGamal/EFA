@@ -13,7 +13,7 @@ from functools import wraps
 app = Flask(__name__)
 CORS(app, support_credentials=True)
 query_factory = QueryFactory()
-query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="pass123")
+query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="jimmy")
 
 app.config['SECRET_KEY'] = 'el secret key aho'
 
@@ -22,6 +22,7 @@ app.config['SECRET_KEY'] = 'el secret key aho'
 def token_required(f): 
     @wraps(f) 
     def decorated(*args, **kwargs): 
+        print(request.headers)
         token = None
         # jwt is passed in the request header 
         if 'x-access-token' in request.headers: 
@@ -56,6 +57,7 @@ pusher = Pusher(
     )
 
 @app.route('/AddStadium',methods=['POST'])
+@token_required
 def addStadium():
     stadium = request.get_json()
     print(stadium)
@@ -73,6 +75,7 @@ def addStadium():
     return jsonify(response)
 
 @app.route('/getStadiums',methods=['GET'])
+@token_required
 def getStadiums():
     queryResult = query_factory.getStadiums()
     stadiums = []
@@ -85,6 +88,7 @@ def getStadiums():
     return jsonify(stadiums)
 
 @app.route('/getTeams',methods=['GET'])
+@token_required
 def getTeams():
     queryResult = query_factory.getTeams()
     teams = []
@@ -97,6 +101,7 @@ def getTeams():
     return jsonify(teams)
 
 @app.route('/getReferees',methods=['GET'])
+@token_required
 def getReferees():
     queryResult = query_factory.getReferees()
     referees = []
@@ -109,6 +114,7 @@ def getReferees():
     return jsonify(referees)
 
 @app.route('/getLinemen',methods=['GET'])
+@token_required
 def getLinemen():
     queryResult = query_factory.getLinemen()
     Linemen = []
@@ -121,6 +127,7 @@ def getLinemen():
     return jsonify(Linemen)
 
 @app.route('/createMatch',methods=['POST'])
+@token_required
 def addMatch():
     match = request.get_json()
     print(match)
@@ -142,6 +149,7 @@ def addMatch():
     return jsonify(response)
 
 @app.route('/editMatch',methods=['POST'])
+@token_required
 def editMatch():
     match = request.get_json()
     print(match)
