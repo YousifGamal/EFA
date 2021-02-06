@@ -43,7 +43,9 @@ export default {
         var timeDiff = mdate - currentDate;
         if(timeDiff >= 3*24*60*60)
         {
-            axios.get("http://localhost:5000/deleteticket/"+id)
+            axios.get("http://localhost:5000/deleteticket/"+id,{
+        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+      })
             .then()
             .catch(err => console.log(err))
             this.tickets = this.tickets.filter(ticket => ticket[0] !== id);
@@ -54,7 +56,9 @@ export default {
     pusher.subscribe('seats')
     pusher.bind('seat-reserved', data => {
       console.log(data);
-      axios.get("http://localhost:5000/showusertickets/"+1) // lazem tt3dl
+      axios.get("http://localhost:5000/showusertickets/"+(window.localStorage.getItem("id")),{
+        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+      })
       .then(res => this.tickets = res.data)
       .catch(err => console.log(err))  
     })
@@ -62,7 +66,9 @@ export default {
   },
   beforeMount(){
     
-    axios.get("http://localhost:5000/showusertickets/"+1) // lazem tt3dl
+    axios.get("http://localhost:5000/showusertickets/"+(window.localStorage.getItem("id")),{
+        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+      })
     .then(res => this.tickets = res.data)
     .catch(err => console.log(err))
   },created(){

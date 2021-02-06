@@ -6,3 +6,7 @@ insert into efa.teams values(1,'Zamalek');
 insert into efa.teams values(2,'Ma7la');
 insert into efa.match values(2,1,1,2,1,1,2,'2021-02-07','11:00:00');
 insert into efa.reservation values(4,1,2,20);
+insert into efa."user" values(1,'25','69','s','s','2019-03-06','s','madirdi','sdf','sdfds','sdf',0);
+
+
+insert into efa."user" values('AymonAdmin','dummy','Ayman','Ayman','2019-03-06','Male','madirdi','sdf','sdfds','Admin',0);

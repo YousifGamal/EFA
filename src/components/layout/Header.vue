@@ -1,8 +1,9 @@
 <template>
   <div>
-    <nav class="navbar navbar-light bg-light p-3 mb-2 bg-dark text-white">
-      <h3>Site admin</h3><b-button size="sm" @click="Logout()">Log out</b-button>
-    </nav>
+    <b-navbar toggleable="lg" type="dark" variant="dark">
+      <b-navbar-brand href="#">Console Page</b-navbar-brand>
+      <b-navbar-brand href="/login" @click="Logout" class="ml-auto">Logout</b-navbar-brand>
+    </b-navbar>
     
   </div>
 </template>

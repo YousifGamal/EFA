@@ -227,18 +227,21 @@ def numberOfReserSeats():
 '''
 
 @app.route("/showallusers/")
+@token_required
 def showAllUsers():
     response = query_factory.getAllUsers()
     print(response)
     return jsonify(response)
 
 @app.route("/searchforuser/<string:userName>")
+@token_required
 def searchUser(userName):
     response = query_factory.searchUser(userName)
     print(response)
     return jsonify(response)
 
 @app.route("/deleteuser/<int:id>")
+@token_required
 def deleteUser(id):
     response = query_factory.deleteUser(id)
     return response
@@ -249,18 +252,21 @@ def deleteUser(id):
 '''
 
 @app.route("/showpendingusers/")
+@token_required
 def showAllPendingUsers():
     response = query_factory.getAllPendingUsers()
     print(response)
     return jsonify(response)
 
 @app.route("/searchforpending/<string:userName>")
+@token_required
 def searchPendingUser(userName):
     response = query_factory.searchPendingUser(userName)
     print(response)
     return jsonify(response)
 
 @app.route("/approvepending/<int:id>")
+@token_required
 def approvePending(id):
     response = query_factory.approvePendingUser(id)
     return response
@@ -269,6 +275,7 @@ def approvePending(id):
     show/delete tickets functions
 '''
 @app.route("/showusertickets/<int:id>")
+@token_required
 def showUserTickets(id):
     response = query_factory.showTickets(id)
     tickets = []
@@ -287,13 +294,13 @@ def showUserTickets(id):
     return jsonify(tickets)
 
 @app.route("/deleteticket/<int:ticketId>")
+@token_required
 def deleteUserTicket(ticketId):
     print(ticketId)
     response = query_factory.deleteTicket(ticketId)
     data="yaraaab"
     pusher.trigger('seats', 'seat-reserved', data)
     return response
-
 
 @app.route('/createUser',methods=['POST'])
 def createUser():

@@ -260,7 +260,6 @@ export default {
 
             window.localStorage.setItem("role", res.data.role);
             window.localStorage.setItem("id", res.data.id);
-
             if (res.data.role === "Fan") {
               window.localStorage.setItem("token", res.data.token);
               this.$router.push({ name: "user" });

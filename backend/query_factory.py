@@ -144,14 +144,14 @@ class QueryFactory:
         Users related queries : show,delete,search
     '''
     def getAllUsers(self):
-        query = "SELECT user_id,user_name from efa.user where status = 0;"
+        query = "SELECT user_id,user_name from efa.user where status = 0 and role != 'Admin';"
         response = self.db_manager.execute_query(query)
         # Fetch result
         return response
     
     def searchUser(self,userName):
         #userName = "%"+userName+"%"
-        query = "SELECT user_id,user_name from efa.user where status = 0 "\
+        query = "SELECT user_id,user_name from efa.user where status = 0 and role != 'Admin' "\
             f"and lower(user_name) Like lower('%{userName}%');"
         response = self.db_manager.execute_query(query)
         return response
