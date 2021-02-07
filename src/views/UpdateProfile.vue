@@ -1,9 +1,7 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand href="/">Home</b-navbar-brand>
-      <b-navbar-brand href="/manager">Manager</b-navbar-brand>
-      <b-navbar-brand href="/user">User</b-navbar-brand>
+      <b-navbar-brand @click="goHome()" href="#">Home</b-navbar-brand>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
@@ -159,6 +157,14 @@ export default {
   },
 
   methods: {
+    goHome(){
+      const role = window.localStorage.getItem("role");
+      console.log(role);
+      if(role == "Fan")
+        this.$router.push({ name: "user"});
+      else
+        this.$router.push({ name: "Manager"})
+    },
     onSubmit(event) {
       event.preventDefault();
 

@@ -240,10 +240,11 @@ class QueryFactory:
 
 
     def addUser(self,data):
+        status = 0 if data['role'] == "Fan" else 1
         query:str = "INSERT INTO efa.user(user_name, password, first_name, last_name, birth_date, gender, city, address, email, role, status) \
                      VALUES ( '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', {});".format(
                          data['username'],hashlib.sha256(data['pass1'].encode()).hexdigest() ,data['first_name'],data['last_name'],data['birth_date'],data['gender'],data['city']
-                         ,data['address'],data['email'],data['role'],0)
+                         ,data['address'],data['email'],data['role'],status)
         response = self.db_manager.execute_query_no_return(query)
         return response
 

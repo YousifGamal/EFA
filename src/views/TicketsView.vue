@@ -32,7 +32,8 @@ export default {
     ticketList
   },data(){
     return{
-      tickets:[]
+      tickets:[],
+      token:window.localStorage.getItem("token")
     }
   },
   methods:{
@@ -44,7 +45,7 @@ export default {
         if(timeDiff >= 3*24*60*60)
         {
             axios.get("http://localhost:5000/deleteticket/"+id,{
-        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+        headers: { "x-access-token": `${this.token}` },
       })
             .then()
             .catch(err => console.log(err))
@@ -57,7 +58,7 @@ export default {
     pusher.bind('seat-reserved', data => {
       console.log(data);
       axios.get("http://localhost:5000/showusertickets/"+(window.localStorage.getItem("id")),{
-        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+        headers: { "x-access-token": `${this.token}` },
       })
       .then(res => this.tickets = res.data)
       .catch(err => console.log(err))  
@@ -67,7 +68,7 @@ export default {
   beforeMount(){
     
     axios.get("http://localhost:5000/showusertickets/"+(window.localStorage.getItem("id")),{
-        headers: { "x-access-token": `${window.localStorage.getItem("token")}` },
+        headers: { "x-access-token": `${this.token}` },
       })
     .then(res => this.tickets = res.data)
     .catch(err => console.log(err))
