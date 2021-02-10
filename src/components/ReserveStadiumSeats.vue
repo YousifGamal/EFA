@@ -105,6 +105,9 @@
           headers: { "x-access-token": `${this.token}` },
           })
           .then(res => {this.alreadyReservedSeats =  res.data;
+            if(this.alreadyReservedSeats.length!=0){
+              if(this.alreadyReservedSeats[0]=="false") return;
+            }
             if(this.alreadyReservedSeats.length==0){
               this.reservedSeats.splice(0);
               this.isPaid = true;

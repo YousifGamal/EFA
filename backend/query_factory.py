@@ -124,15 +124,34 @@ class QueryFactory:
 
     def reserveStadiumsSeats(self, matchId, userId, seats):
         reserved_seats = []
-        for s in seats:
-            query:str = "INSERT INTO efa.reservation(" \
-                        "match_id, user_id, seat_number)" \
-                        f"VALUES ({matchId}, {userId}, {s});"
-            response = self.db_manager.execute_query_no_return(query)
-            #error = False
-            if response is not None:
-                #some error happened
-                reserved_seats.append(s)
+        query:str = "select * from\
+                    (select match_id, mdate, mtime from efa.match\
+                     where match_id = "+str(matchId)+\
+                    " ) as A\
+                    join\
+                    (select m.match_id,m.mdate, m.mtime from efa.reservation r\
+                    inner join efa.match m\
+                    on r.match_id=m.match_id\
+                    where r.user_id= "+str(userId)+\
+                    " and m.match_id<>"+str(matchId)+\
+                    " group by m.match_id,m.mdate, m.mtime\
+                    ) as B\
+                    on A.match_id<>B.match_id\
+                    where A.mdate=B.mdate\
+                    and A.mtime=B.mtime"
+        response = self.db_manager.execute_query(query)
+        if(len(response)==0):
+            for s in seats:
+                query:str = "INSERT INTO efa.reservation(" \
+                            "match_id, user_id, seat_number)" \
+                            f"VALUES ({matchId}, {userId}, {s});"
+                response = self.db_manager.execute_query_no_return(query)
+                #error = False
+                if response is not None:
+                    #some error happened
+                    reserved_seats.append(s)
+        else:
+            reserved_seats.append("false")
         return reserved_seats
     def numberOfRecvSeasts(self,matchId):
         query:str = "select count(*) from efa.reservation "\
