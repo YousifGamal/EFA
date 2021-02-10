@@ -17,7 +17,7 @@
         <b-button v-show="type === 1" size="lg" @click.prevent="toggleReserveSeats()" variant="outline-dark">Reserve Seats</b-button>
     </b-card>
     <CreateMatch v-if="editMatch"  v-on:matchedited="closeCreateMatchCard" 
-    v-bind:match="match"  v-bind:matchId="match.id" ></CreateMatch>
+    v-bind:match="match"  v-bind:matchId="match.id" v-bind:disableDeleteOutSide="disbaleEdit" ></CreateMatch>
     <ViewStadiumSeats  v-if="showStadium" v-bind:matchId="match.id"></ViewStadiumSeats>
     <ReserveStadiumSeats  v-show="showReserve" v-bind:matchId="match.id"></ReserveStadiumSeats>
   </div>
