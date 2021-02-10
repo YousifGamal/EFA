@@ -29,8 +29,36 @@ export default {
         console.log("Here");
         window.localStorage.clear();
         // this.$router.push({ name: "Login" });
-      },
-  }
+      },},
+  beforeMount()
+  {
+    const role = window.localStorage.getItem('role');
+    // console.log(role);
+    if(role === 'Manager')
+    {
+      // next({name:'Manager'})
+      this.$router.push({ name: "Manager" });
+      
+    }
+    else if(role === 'Fan')
+    {
+      // next({name:'user'})
+      this.$router.push({ name: "user" });
+    }
+    else if(role === 'Admin')
+    {
+      // next({name:'Console'})
+      this.$router.push({ name: "Console" });
+
+    }
+    else{
+      // next({name:'Login'})
+      this.$router.push({ name: "Login" });
+
+    }
+   
+  },
+  
 }
 </script>
 <style scoped>

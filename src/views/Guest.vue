@@ -3,14 +3,10 @@
       <b-navbar toggleable="lg" type="dark" variant="dark">
           <b-navbar-brand href="/guest">Home</b-navbar-brand>
 
-
-          <b-collapse id="nav-collapse" is-nav>
-
             <b-navbar-nav class="ml-auto" >
                 <!-- to do update href-->
               <b-navbar-brand href="/login">Login/signup</b-navbar-brand>
             </b-navbar-nav>
-          </b-collapse>
       </b-navbar>
         <b-row>
             <b-col cols="2"></b-col>

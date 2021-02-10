@@ -95,7 +95,9 @@ router.beforeEach((to, from, next) => {
   // console.log(to.name);
   
   if (to.name !== 'Login' && !isAuthenticated && to.name !== 'guest' ) next({ name: 'Login' })
-  else next(true)
+  else {
+    next(true)
+  }
 })
 
 

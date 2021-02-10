@@ -13,7 +13,7 @@ from functools import wraps
 app = Flask(__name__)
 CORS(app, support_credentials=True)
 query_factory = QueryFactory()
-query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="jimmy")
+query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="pass123")
 
 app.config['SECRET_KEY'] = 'el secret key aho'
 

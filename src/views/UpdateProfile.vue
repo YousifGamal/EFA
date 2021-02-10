@@ -3,14 +3,13 @@
     <b-navbar toggleable="lg" type="dark" variant="dark">
       <b-navbar-brand @click="goHome()" href="#">Home</b-navbar-brand>
 
-      <b-collapse id="nav-collapse" is-nav>
+      
         <b-navbar-nav class="ml-auto">
           <b-navbar-brand href="/update">Profile</b-navbar-brand>
           <b-navbar-brand href="/login" @click="Logout()"
             >Logout</b-navbar-brand
           >
         </b-navbar-nav>
-      </b-collapse>
     </b-navbar>
 
     <div class="card">

@@ -1,18 +1,18 @@
 <template>
     <b-container fluid style="padding-left:0;padding-right:0">
-      <b-navbar toggleable="lg" type="dark" variant="dark">
+      <!-- <div class="container"> -->
+        <b-navbar toggleable="lg" type="dark" variant="dark">
           <b-navbar-brand href="/user">Home</b-navbar-brand>
           <b-navbar-brand href="/Tickets">My Tickets</b-navbar-brand>
-
-          <b-collapse id="nav-collapse" is-nav>
 
             <b-navbar-nav class="ml-auto" >
 
               <b-navbar-brand href="/update">Profile</b-navbar-brand>
               <b-navbar-brand href="/login" @click="Logout()">Logout</b-navbar-brand>
             </b-navbar-nav>
-          </b-collapse>
       </b-navbar>
+      <!-- </div> -->
+      
         <b-row>
             <b-col cols="2"></b-col>
             <b-col cols="8">
