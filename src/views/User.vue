@@ -114,7 +114,14 @@ export default {
     
   },
   beforeMount(){
-    this.getMatches()
+    const role = window.localStorage.getItem('role');
+    if(role === 'Fan')
+    {
+      this.getMatches()
+    }
+    else{
+      this.$router.push({ name: "Home" });
+    }
   }
 }
 </script>
