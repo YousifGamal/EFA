@@ -5,8 +5,10 @@ from query_factory import QueryFactory
 from datetime import datetime
 from pusher import Pusher
 
+
 # imports for PyJWT authentication 
-import jwt 
+import jwt
+import hashlib 
 from datetime import datetime, timedelta 
 from functools import wraps 
 
