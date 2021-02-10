@@ -17,7 +17,6 @@ query_factory.initialize_connection(db_name="efa", db_user="postgres", db_passwo
 
 app.config['SECRET_KEY'] = 'el secret key aho'
 
-
 # decorator for verifying the JWT 
 def token_required(f): 
     @wraps(f) 
@@ -206,6 +205,7 @@ def getStadiumsSeats():
     return jsonify(response)
 
 @app.route('/addSeats',methods=['POST'])
+@token_required
 def addSeats():
     reservation = request.get_json()
     matchId = reservation.get('matchId')

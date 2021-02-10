@@ -62,7 +62,8 @@
         isReserved: [],
         reservedSeatsBeforehead: [],
         alreadyReservedSeats:[],
-        isPaid: false
+        isPaid: false,
+        token: localStorage.getItem("token")
       }
     },
     created () {
@@ -99,7 +100,9 @@
             seats: this.reservedSeats
           }
 
-          axios.post(reserveSeatsPath,payload)
+          axios.post(reserveSeatsPath,payload, {
+          headers: { "x-access-token": `${this.token}` },
+          })
           .then(res => {this.alreadyReservedSeats =  res.data;
             if(this.alreadyReservedSeats.length==0){
               this.reservedSeats.splice(0);
