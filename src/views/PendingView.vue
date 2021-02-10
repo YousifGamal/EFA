@@ -29,6 +29,13 @@ export default {
     .then()
     .catch(err => console.log(err))
     this.users = this.users.filter(user => user[0] !== id);
+    this.$notify({
+      group: "login",
+      type: "success",
+      title: "Pending user deleted",
+      // text: "Try again..",
+      duration: 3000,
+      });
     },
     searchPending(){
       if(this.searchInput !== "")
@@ -53,6 +60,13 @@ export default {
       .then()
       .catch(err => console.log(err))
       this.users = this.users.filter(user => user[0] !== id);
+      this.$notify({
+        group: "login",
+        type: "success",
+        title: "User has been approved",
+        // text: "Try again..",
+        duration: 3000,
+      });
     }
   },
   created(){
