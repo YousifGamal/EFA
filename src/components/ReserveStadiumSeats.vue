@@ -44,7 +44,7 @@
   const reserveSeatsPath = "http://127.0.0.1:5000/addSeats";  
   export default {
     name: 'ReserveStadiumSeats',
-    props:['matchId','userId'],
+    props:['matchId'],
     data() {
       return {
         form: {
@@ -63,7 +63,8 @@
         reservedSeatsBeforehead: [],
         alreadyReservedSeats:[],
         isPaid: false,
-        token: localStorage.getItem("token")
+        token: localStorage.getItem("token"),
+        userId: localStorage.getItem("id")
       }
     },
     created () {
