@@ -13,9 +13,7 @@ export default {
   name: "PendingItem",
   props: ['pendingUser'],
   methods: {
-      markUser(){
-          console.log(this.pendingUser[0]);
-      }
+      
   }
 }
 </script>

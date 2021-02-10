@@ -29,6 +29,13 @@ export default {
     .then()
     .catch(err => console.log(err))
     this.users = this.users.filter(user => user[0] !== id);
+    this.$notify({
+      group: "login",
+      type: "success",
+      title: "User deleted",
+      // text: "Try again..",
+      duration: 3000,
+      });
     },
     searchUser(){
       if(this.searchInput !== "")

@@ -50,6 +50,21 @@ export default {
             .then()
             .catch(err => console.log(err))
             this.tickets = this.tickets.filter(ticket => ticket[0] !== id);
+            this.$notify({
+              group: "login",
+              type: "success",
+              title: "Ticket deleted",
+              // text: "Try again..",
+              duration: 3000,
+            });
+        }else{
+          this.$notify({
+              group: "login",
+              type: "error",
+              title: "Ticket can't be deleted",
+              // text: "Try again..",
+              duration: 3000,
+            });
         }
     },
     subscribe () {

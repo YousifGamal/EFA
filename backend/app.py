@@ -193,7 +193,7 @@ def getMatches():
         dec["lName1"] = match[13]
         dec["lName2"] = match[14]
         matches.append(dec)
-    #print(matches)
+    print(matches)
     
     return jsonify(matches)
 

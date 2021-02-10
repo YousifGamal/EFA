@@ -3,7 +3,7 @@
     <div style="text-align:left;">
     <!--<input type="checkbox" v-on:click="markUser" />-->
       <b-badge>{{user[1]}}</b-badge>
-      <button @click="$emit('del-user', pendingUser[0])" class="del" title="delete user">&#10062;</button>
+      <button @click="$emit('del-user', user[0])" class="del" title="delete user">&#10062;</button>
     </div>
   </div>
 </template>

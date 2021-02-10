@@ -100,7 +100,7 @@
         <b-row class="myRow">
             <b-col cols="12">
              <b-button v-if="createButton" type="submit" variant="success">CREATE</b-button>
-             <b-button v-if="!createButton" :disabled="disableEditButton" type="button" 
+             <b-button v-if="!createButton" :disabled="disableEditButton || disableDeleteOutSide" type="button" 
                                             @click.prevent="editMatch()"
                                             variant="success">EDIT</b-button>
             </b-col>
@@ -126,7 +126,7 @@ const createMatchPath = "http://127.0.0.1:5000/createMatch";
 const editMatchPath = "http://127.0.0.1:5000/editMatch";
 export default {
   name: 'CreateMatch',
-  props:['matchId','match'],
+  props:['matchId','match','disableDeleteOutSide'],
   data() {
       const now = new Date()
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
