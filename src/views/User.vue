@@ -61,7 +61,11 @@ export default {
   methods:{
     getMatches(){
       axios.get(matchesPath,{})
-      .then(res => this.matches = res.data)
+      .then(res =>
+      { 
+        this.matches = res.data
+        this.disableButtons();
+        })
       .catch(err => console.log(err))
     },
     refreshMatches(){
