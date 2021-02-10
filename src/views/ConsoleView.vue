@@ -19,7 +19,17 @@ export default {
   name: 'ConsoleView',
   components: {
     Header
+    },
+  beforeMount(){
+    const role = window.localStorage.getItem('role');
+    if(role === 'Admin')
+    {
+      this.getMatches()
     }
+    else{
+      this.$router.push({ name: "Home" });
+    }
+  }
   }
 </script>
 

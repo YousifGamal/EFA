@@ -4,8 +4,6 @@
         <b-navbar-brand href="/manager">Home</b-navbar-brand>
 
           <b-navbar-nav class="ml-auto" >
-                
-            <b-navbar-brand href="/update">Profile</b-navbar-brand>
             <b-navbar-brand href="/login" @click="Logout()">Logout</b-navbar-brand>
           </b-navbar-nav>
       </b-navbar>
