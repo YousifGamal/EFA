@@ -5,15 +5,17 @@ from query_factory import QueryFactory
 from datetime import datetime
 from pusher import Pusher
 
+
 # imports for PyJWT authentication 
-import jwt 
+import jwt
+import hashlib 
 from datetime import datetime, timedelta 
 from functools import wraps 
 
 app = Flask(__name__)
 CORS(app, support_credentials=True)
 query_factory = QueryFactory()
-query_factory.initialize_connection(db_name="postgres", db_user="postgres", db_password="jimmy")
+query_factory.initialize_connection(db_name="efa", db_user="postgres", db_password="jimmy")
 
 app.config['SECRET_KEY'] = 'el secret key aho'
 

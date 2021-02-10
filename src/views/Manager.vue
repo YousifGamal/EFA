@@ -4,8 +4,6 @@
         <b-navbar-brand href="/manager">Home</b-navbar-brand>
 
           <b-navbar-nav class="ml-auto" >
-                
-            <b-navbar-brand href="/update">Profile</b-navbar-brand>
             <b-navbar-brand href="/login" @click="Logout()">Logout</b-navbar-brand>
           </b-navbar-nav>
       </b-navbar>
@@ -127,7 +125,15 @@ export default {
       },
   },
   beforeMount(){
-    this.getMatches()
+    const role = window.localStorage.getItem('role');
+    if(role === 'Manager')
+    {
+      this.getMatches()
+    }
+    else{
+      this.$router.push({ name: "Home" });
+    }
+    
   }
 }
 </script>
