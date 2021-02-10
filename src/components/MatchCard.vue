@@ -19,7 +19,7 @@
     <CreateMatch v-if="editMatch"  v-on:matchedited="closeCreateMatchCard" 
     v-bind:match="match"  v-bind:matchId="match.id" ></CreateMatch>
     <ViewStadiumSeats  v-if="showStadium" v-bind:matchId="match.id"></ViewStadiumSeats>
-    <ReserveStadiumSeats  v-show="showReserve" v-bind:matchId="match.id" v-bind:userId="1"></ReserveStadiumSeats>
+    <ReserveStadiumSeats  v-show="showReserve" v-bind:matchId="match.id"></ReserveStadiumSeats>
   </div>
 </template>
 
